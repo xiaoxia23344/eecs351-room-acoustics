@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progress &amp; Challenges · Room Acoustics</title>
+<meta name="description" content="What we have done so far in the room-acoustics project, the problems we ran into, and how we plan to fix them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">Room Acoustics · EECS 351</a>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="data.html">Our Data</a>
+    <a href="plots.html">Three Plots</a>
+    <a href="progress.html" aria-current="page">Progress &amp; Challenges</a>
+    <a href="plan.html">Plan</a>
+    <a href="learned.html">What We Learned</a>
+  </nav>
+</div></header>
+
+<main>
+  <p class="eyebrow">Part 3 · Progress</p>
+  <h1>What we have done so far</h1>
+  <p class="lede">We have a working simulation, real recordings from two rooms, a method that estimates each room's impulse response from those recordings, and a first comparison of the rooms. Along the way we ran into several problems, mostly caused by using phones as the speaker and microphone.</p>
+
+  <div class="toc"><ol>
+    <li><a href="#task1">Task 1: simulating reflections by convolution</a></li>
+    <li><a href="#task2">Task 2: measuring a real room</a></li>
+    <li><a href="#task3">Task 3: comparing two rooms</a></li>
+    <li><a href="#challenges">Challenges and how to overcome them</a></li>
+    <li><a href="#team">Who did what</a></li>
+  </ol></div>
+
+  <h2 id="task1">Task 1 · Simulating reflections by convolution <span class="tag sim" style="font-size:12px">done</span></h2>
+  <p>We convolved <code>claps.wav</code> with three synthetic impulse responses and checked the results in both the time and frequency domains.</p>
+  <figure>
+    <img src="img/waveforms.png" alt="Waveforms of the original clap and the single-echo and multiple-reflection outputs" loading="lazy">
+    <figcaption>Waveforms around the loudest clap. With the single echo, a copy of the clap appears 0.25 s later at about 0.6 of its height (0.52 vs. 0.86). With multiple reflections, copies appear at +0.15, +0.30 and +0.50 s, getting weaker each time.</figcaption>
+  </figure>
+  <p><strong>Time domain.</strong> Every designed echo appears where expected, and each clap gets its own set of echoes, which the output then adds together. That is linearity and time-invariance at work. All the delays (150–500 ms) are far above the ~30–50 ms echo threshold, so you hear separate repeats rather than reverberation. The third model, with millisecond reflections and a noise tail, sounds like a small room instead.</p>
+  <div class="two">
+    <figure>
+      <img src="img/figA_envelope.png" alt="Short-time energy of original and three simulated outputs" loading="lazy">
+      <figcaption>Short-time energy. Discrete echoes are separate bumps; the decay-tail model falls along a straight line in dB.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/figA_comb_zoom.png" alt="Measured Y/X magnitude for single echo against the comb-filter formula" loading="lazy">
+      <figcaption>\(|Y/X|\) for the single echo (solid) matches the comb filter \(|1+0.6\,e^{-j2\pi f\,0.25}|\) (dashed) almost exactly.</figcaption>
+    </figure>
+  </div>
+  <p><strong>Frequency domain.</strong> A single reflection with gain \(a\) and delay \(D\) makes a comb filter, \(|H(f)| = |1 + a\,e^{-j2\pi f D}|\), that swings between +4.1 dB and −8.0 dB every \(1/D = 4\) Hz. That ripple is too fine to hear as a change in tone. On average the spectrum rises by \(10\log_{10}(1+a^2)\): we predicted 1.34 dB and 1.83 dB for the two echo models and measured 1.33 dB and 1.79 dB.</p>
+  <figure>
+    <img src="img/figA_spectrogram.png" alt="Spectrograms of original and three simulated outputs" loading="lazy">
+    <figcaption>Spectrograms show both views together: discrete echoes are repeated vertical stripes; the decay tail smears energy along time.</figcaption>
+  </figure>
+
+  <h2 id="task2">Task 2 · Measuring a real room <span class="tag sim" style="font-size:12px">done, needs better data</span></h2>
+  <p>We played <code>claps.wav</code> from a phone in each room and recorded at four positions (setup on the <a href="data.html#rooms">data page</a>). Because we know the input, we estimate the room impulse response by <a href="learned.html">regularized deconvolution</a>, band-limit it to 300 Hz – 8 kHz (where the phone gives usable sound), and compute the Schroeder energy-decay curve, EDT, \(T_{10}\), DRR and \(C_{50}\).</p>
+  <figure>
+    <img src="img/figB_room1_input_vs_rec.png" alt="First claps of the input versus the bedroom recording" loading="lazy">
+    <figcaption>Bedroom: input claps (top) vs. recording at position 1 (bottom). Each clap now rings for 100–150 ms. The relative clap levels are not preserved, which points to automatic gain control in the phone (see challenges).</figcaption>
+  </figure>
+  <figure>
+    <img src="img/figB_room1_ir_edc.png" alt="Bedroom estimated impulse responses and energy-decay curves for four positions" loading="lazy">
+    <figcaption>Bedroom: estimated impulse responses (first 100 ms) and energy-decay curves. There is no single dominant direct-sound spike: reflections in the first 10–20 ms are about as strong as the direct sound, as expected in a small room. DRR is negative at every position (−3 to −8 dB).</figcaption>
+  </figure>
+  <figure>
+    <img src="img/figB_room1_freq.png" alt="Bedroom one-third octave magnitude response of four positions" loading="lazy">
+    <figcaption>Bedroom: 1/3-octave magnitude of the estimated responses. All positions share a peak near 1 kHz, a deep dip near 2.6 kHz and a drop above 4 kHz. This shape appears in both rooms, so it mostly comes from the phones, not the room. Grey: outside the reliable band.</figcaption>
+  </figure>
+
+  <h2 id="task3">Task 3 · Comparing two rooms <span class="tag sim" style="font-size:12px">first pass done</span></h2>
+  <figure>
+    <img src="img/figB_compare.png" alt="Energy decay curves of all eight positions and mean frequency response of each room" loading="lazy">
+    <figcaption>Left: energy-decay curves of all eight positions (blue bedroom, orange bathroom); grey band is the \(T_{10}\) fit range. Right: mean 1/3-octave response of each room.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Metric</th><th class="r">Bedroom</th><th class="r">Bathroom</th><th>Reading</th></tr></thead>
+    <tbody>
+      <tr><td>EDT</td><td class="r">0.32 ± 0.03 s</td><td class="r">0.40 ± 0.02 s</td><td>Bathroom decays more slowly at first, at every position</td></tr>
+      <tr><td>\(T_{10}\)</td><td class="r">0.38 ± 0.03 s</td><td class="r">0.38 ± 0.06 s</td><td>Same within measurement error</td></tr>
+      <tr><td>\(C_{50}\)</td><td class="r">9.7 ± 0.7 dB</td><td class="r">7.6 ± 0.6 dB</td><td>Bathroom less clear, no overlap</td></tr>
+      <tr><td>DRR</td><td class="r">−5.0 ± 1.6 dB</td><td class="r">−5.4 ± 2.0 dB</td><td>Similar</td></tr>
+    </tbody>
+  </table></div>
+  <p>The slower early decay in the bathroom fits its hard, non-absorbing surfaces. We expected the bedroom's soft furniture to make it sound duller at high frequencies, but we saw the opposite: the bathroom has about 5 dB less energy above 2.4 kHz. A likely reason is the source: in the bathroom the phone lay face-up on the floor, so the corner microphones were far off the speaker's axis, and high frequencies are the most directional. Because the rooms differ in size, contents, openings and source and recorder placement all at once, we cannot attribute any difference to one factor.</p>
+
+  <h2 id="challenges">Challenges and how to overcome them</h2>
+  <div class="tbl"><table>
+    <thead><tr><th style="width:28%">Challenge</th><th>What happened</th><th style="width:34%">How we can overcome it</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>A clap is not an impulse</strong></td>
+        <td>Our input has 12 claps only 0.45 s apart, so each clap's tail runs into the next. Treating a recording as \(h[n]\) directly gave reverberation times of 3–12 s, which is meaningless.</td>
+        <td><em>Partly solved:</em> deconvolve with the known input. <em>Next:</em> use an exponential sine sweep, which spreads energy evenly over all frequencies and separates the response cleanly.</td>
+      </tr>
+      <tr>
+        <td><strong>The phone is not linear</strong></td>
+        <td>Input clap levels range 0.18–1.00, but the recordings show 0.39–1.00 (bedroom) and 0.63–1.00 (bathroom). A linear system cannot squeeze levels like that, so the phone most likely applies automatic gain control or limiting.</td>
+        <td>Record with a fixed-gain app or a dedicated recorder; play the sweep at one constant level; check linearity by measuring at two playback levels and comparing.</td>
+      </tr>
+      <tr>
+        <td><strong>The device colors everything</strong></td>
+        <td>Every estimate is really \(h_\text{speaker} * h_\text{room} * h_\text{mic}\). A phone speaker gives almost nothing below ~300 Hz, and the same peak/dip shape appears in every position.</td>
+        <td><em>Done:</em> analyze only 300 Hz – 8 kHz. <em>Next:</em> measure a reference with the mic very close to the speaker and divide that device response out; compare rooms only by <em>differences</em>, which cancel the shared device response.</td>
+      </tr>
+      <tr>
+        <td><strong>Too much noise</strong></td>
+        <td>The noise floor is only 19–24 dB below the peak. The standard \(T_{20}\) needs about 35 dB, so we can only report EDT and \(T_{10}\).</td>
+        <td>A longer sweep puts more energy into the room; average 3+ takes per position; record at a quiet time.</td>
+      </tr>
+      <tr>
+        <td><strong>No synchronization, hand-held recorder</strong></td>
+        <td>We have to align signals afterwards by their peaks, and small hand movements change the position between claps.</td>
+        <td>Put the recorder on a stand at a marked spot; add a sync click before the sweep.</td>
+      </tr>
+      <tr>
+        <td><strong>Confounded room comparison</strong></td>
+        <td>The rooms differ in size, materials, shape and placement, so we cannot say <em>why</em> the bathroom is less clear.</td>
+        <td>Run a controlled test: same room, same positions, with and without towels and blankets on the walls, changing only the material.</td>
+      </tr>
+      <tr>
+        <td><strong>Simulation not based on a real room</strong></td>
+        <td>The Task 1 delays and gains are illustrative, not derived from any room.</td>
+        <td>Build an image-source model from the measured room dimensions and compare its early reflections with the measured responses.</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="team">Who did what</h2>
+  <div class="grid">
+    <div class="card"><h3>Yiheng Li</h3><p>Simulation and DSP: synthetic impulse responses, convolution code, simulated audio.</p></div>
+    <div class="card"><h3>Yongjia Xia</h3><p>Recordings and experimental conditions: room selection, measurements, sketches, all eight recordings.</p></div>
+    <div class="card"><h3>Yingqian Sun</h3><p>Analysis and integration: time/frequency analysis, impulse-response estimation, room comparison, report.</p></div>
+  </div>
+  <p class="meta">Full details, tables and code are in our <a href="progress_report_1.pdf">first report (PDF)</a>.</p>
+
+  <div class="pager"><a href="plots.html">← Three new plots</a><a href="plan.html">Plan for the next three weeks →</a></div>
+</main>
+<footer>EECS 351 Digital Signal Processing · Fall 2026 · Yiheng Li, Yongjia Xia, Yingqian Sun</footer>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Plan · Room Acoustics</title>
+<meta name="description" content="Our plan for the next three weeks: sine-sweep measurements, a controlled material test, a room model, and an interactive demo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">Room Acoustics · EECS 351</a>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="data.html">Our Data</a>
+    <a href="plots.html">Three Plots</a>
+    <a href="progress.html">Progress &amp; Challenges</a>
+    <a href="plan.html" aria-current="page">Plan</a>
+    <a href="learned.html">What We Learned</a>
+  </nav>
+</div></header>
+
+<main>
+  <p class="eyebrow">Part 4 · Plan</p>
+  <h1>Plan for the next three weeks</h1>
+  <p class="lede">Our goals: get cleaner measurements, test one room factor on its own, connect the simulation to real room geometry, and let visitors hear the results.</p>
+
+  <ol class="timeline">
+    <li>
+      <div class="when">Week 1 · Nov 13 – Nov 19</div>
+      <h3>Task 1: Re-measure both rooms with a sine sweep</h3>
+      <p>Generate a 5-s exponential sine sweep from 100 Hz to 16 kHz and its inverse filter (Farina's method). Play it in both rooms at the same eight positions, with the recorder on a stand, a fixed-gain recording app, a sync click, and three takes per position. Convolve each recording with the inverse filter to get \(h[n]\), then repeat our EDT / \(T_{20}\) / \(C_{50}\) analysis.</p>
+      <p><strong>Done when:</strong> peak-to-noise ratio of at least 35 dB, so \(T_{20}\) can be reported, and the three takes agree within 0.02 s.</p>
+      <p class="owner">Lead: Yongjia (recording) · Yingqian (analysis)</p>
+    </li>
+    <li>
+      <div class="when">Week 2 · Nov 20 – Nov 26</div>
+      <h3>Task 2: Controlled material test</h3>
+      <p>In the bathroom, keep everything fixed (positions, phone, level) and record twice: bare walls, then with towels and blankets covering the walls and tub. Compare EDT, \(T_{20}\) and octave-band \(C_{50}\). This is the only way to separate the effect of absorbing material from room size and placement.</p>
+      <p><strong>Done when:</strong> we can say how much, and at which frequencies, soft material shortens the decay, with error bars from repeated takes.</p>
+      <p class="owner">Lead: Yongjia · Yingqian</p>
+    </li>
+    <li>
+      <div class="when">Week 2 · Nov 20 – Nov 26 (in parallel)</div>
+      <h3>Task 3: Image-source model of the two rooms</h3>
+      <p>Write an image-source simulation for a rectangular room using the measured dimensions, source and recorder positions. It places a mirror-image source behind each wall, giving the delay and strength of every early reflection. Add an exponential tail with the measured \(T_{60}\). Compare the simulated and measured impulse responses and their energy-decay curves.</p>
+      <p><strong>Done when:</strong> simulated first-reflection times match the measured ones within a few ms, or we can explain why they do not (furniture, unmeasured distances).</p>
+      <p class="owner">Lead: Yiheng</p>
+    </li>
+    <li>
+      <div class="when">Week 3 · Nov 27 – Dec 3</div>
+      <h3>Task 4: Auralization and interactive website demo</h3>
+      <p>Convolve dry speech and music with the measured and modeled impulse responses so visitors can hear "the same voice in our bedroom vs. our bathroom". Add a browser demo (Web Audio) with sliders for reflection delay, reflection strength and \(T_{60}\), based on our simple model. Write the final results and limitations, and finish the website.</p>
+      <p><strong>Done when:</strong> the website has A/B listening for every room and model, and the final write-up is complete.</p>
+      <p class="owner">Lead: Yingqian (website) · Yiheng (demo) · everyone reviews</p>
+    </li>
+  </ol>
+
+  <h2>If something goes wrong</h2>
+  <ul>
+    <li><strong>The phone still compresses the sweep:</strong> borrow a USB microphone or a handheld recorder with manual gain, or lower the playback level until two levels give the same response.</li>
+    <li><strong>No time for the material test:</strong> prioritize the sine-sweep re-measurement, since better data improves every other result.</li>
+    <li><strong>Image-source model too far from the measurements:</strong> keep it as a lower bound for the early reflections and explain the gap (furniture, unmeasured distances).</li>
+  </ul>
+
+  <div class="pager"><a href="progress.html">← Progress &amp; challenges</a><a href="learned.html">What we learned →</a></div>
+</main>
+<footer>EECS 351 Digital Signal Processing · Fall 2026 · Yiheng Li, Yongjia Xia, Yingqian Sun</footer>
+</body>
+</html>

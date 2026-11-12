@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Data · Room Acoustics</title>
+<meta name="description" content="The audio, rooms and recording conditions used in our room-acoustics project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">Room Acoustics · EECS 351</a>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="data.html" aria-current="page">Our Data</a>
+    <a href="plots.html">Three Plots</a>
+    <a href="progress.html">Progress &amp; Challenges</a>
+    <a href="plan.html">Plan</a>
+    <a href="learned.html">What We Learned</a>
+  </nav>
+</div></header>
+
+<main>
+  <p class="eyebrow">Part 1 · Data</p>
+  <h1>Our data</h1>
+  <p class="lede">We work with one kind of input and three kinds of derived or recorded audio: an original clap recording, simulated outputs computed from it, and real recordings of it played back in two rooms.</p>
+
+  <div class="toc"><ol>
+    <li><a href="#types">Data types at a glance</a></li>
+    <li><a href="#input">The input: a clap recording</a></li>
+    <li><a href="#simulated">Simulated room outputs</a></li>
+    <li><a href="#rooms">The two real rooms</a></li>
+    <li><a href="#setup">How we recorded</a></li>
+    <li><a href="#audio">Listen to every file</a></li>
+  </ol></div>
+
+  <h2 id="types">Data types at a glance</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Data</th><th>How we got it</th><th>Format</th><th>Count</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Original clap</strong> <code>claps.wav</code></td><td>Recorded with hands close to a phone microphone. This is \(x[n]\).</td><td>WAV, mono after averaging</td><td class="r">1</td></tr>
+      <tr><td><strong>Simulated outputs</strong></td><td>\(x[n]\) convolved with three impulse responses we designed in Python</td><td>WAV, 16-bit</td><td class="r">3</td></tr>
+      <tr><td><strong>Bedroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder at the midpoint of each wall</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
+      <tr><td><strong>Bathroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder in each corner</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
+      <tr><td><strong>Room measurements</strong></td><td>Tape-measured dimensions and hand sketches of both rooms</td><td>Sketch, table</td><td class="r">2 rooms</td></tr>
+    </tbody>
+  </table></div>
+  <p>From these we compute further data: estimated room impulse responses \(\hat h[n]\), energy-decay curves, spectra, and room-acoustic metrics (EDT, \(T_{10}\), DRR, \(C_{50}\)).</p>
+
+  <h2 id="input">The input: a clap recording</h2>
+  <p><code>claps.wav</code> contains a series of 12 hand claps about 0.45 s apart. A clap is a short, broadband burst, so it is a rough stand-in for an impulse. It is not a perfect one: it lasts a few milliseconds, has its own spectrum, and the claps vary in loudness (from 0.18 to 1.00 of the loudest). Because the hands were close to the microphone, the direct sound dominates, but there is still a short tail from the room it was recorded in.</p>
+
+  <h2 id="simulated">Simulated room outputs</h2>
+  <p>Each synthetic impulse response is an impulse at time zero (the direct sound) plus smaller, delayed impulses (reflections). We compute \(y = x * h\) with <code>scipy.signal.fftconvolve</code>.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th>Delays (s)</th><th>Amplitudes</th></tr></thead>
+    <tbody>
+      <tr><td>Single echo</td><td>0, 0.25</td><td>1.00, 0.60</td></tr>
+      <tr><td>Multiple reflections</td><td>0, 0.15, 0.30, 0.50</td><td>1.00, 0.60, 0.35, 0.20</td></tr>
+      <tr><td>Early reflections + decay tail</td><td>0, 0.007, 0.012, 0.018, then noise tail from 0.020</td><td>1.00, 0.50, 0.40, 0.30; tail \(T_{60}=0.40\) s, DRR 0 dB</td></tr>
+    </tbody>
+  </table></div>
+  <figure>
+    <img src="img/impulse_responses.png" alt="Stem plots of the single-echo and multiple-reflection impulse responses" loading="lazy">
+    <figcaption>The two discrete-echo impulse responses. The third model (millisecond reflections plus an exponentially decaying noise tail) was added because real reflections in a small room arrive within tens of milliseconds, not hundreds.</figcaption>
+  </figure>
+  <figure>
+    <img src="img/fig0_tail_model.png" alt="The early-reflections-plus-decay-tail impulse response" loading="lazy">
+    <figcaption>The third synthetic impulse response: direct sound, three early reflections, and a noise tail designed to decay by 60 dB in 0.40 s.</figcaption>
+  </figure>
+
+  <h2 id="rooms">The two real rooms</h2>
+  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Factor</th><th>Room One: bedroom</th><th>Room Two: bathroom</th></tr></thead>
+    <tbody>
+      <tr><td>Size (L × W × H)</td><td>4.10 × 3.10 × 2.40 m</td><td>1.50 × 2.40 × 2.40 m</td></tr>
+      <tr><td>Volume</td><td>≈ 30.5 m³</td><td>≈ 8.6 m³</td></tr>
+      <tr><td>Contents</td><td>Bed, desk, shelves (mix of soft and hard)</td><td>Bathtub, toilet, sink cabinet (hard)</td></tr>
+      <tr><td>Openings</td><td>0.86 m doorway to corridor, no door</td><td>Closed</td></tr>
+      <tr><td>Source</td><td>Phone on the center shelf, ≈ 0.8 m high</td><td>Phone on the floor mat, room center</td></tr>
+      <tr><td>Recorder</td><td>Midpoint of each wall, same height as source</td><td>Each corner, 0.90 m high, hand-held</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <figure>
+      <img src="img/bedroom_plan.png" alt="Bedroom floor plan with source and four recorder positions" loading="lazy">
+      <figcaption>Bedroom plan. Red dot: source. Blue 1–4: recorder positions.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/bathroom_plan.png" alt="Bathroom floor plan with source and four recorder positions" loading="lazy">
+      <figcaption>Bathroom plan. Red dot: source. Blue 1–4: recorder positions.</figcaption>
+    </figure>
+  </div>
+  <p>The room dimensions already predict two things. Wall-to-wall round trips \(2d/c\) are 9–24 ms, so reflections should fuse with the direct sound rather than be heard as separate echoes. The lowest room modes \(c/2d\) lie at 42–114 Hz, where a phone speaker produces almost no sound, so we cannot observe them.</p>
+
+  <h3>Original sketches and 3D illustrations</h3>
+  <div class="two">
+    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Hand sketch of the bedroom with dimensions" loading="lazy"><figcaption>Bedroom hand sketch.</figcaption></figure>
+    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Hand sketch of the bathroom with dimensions" loading="lazy"><figcaption>Bathroom hand sketch.</figcaption></figure>
+    <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="AI-generated 3D illustration of the bedroom" loading="lazy"><figcaption>Bedroom, AI-generated 3D illustration. For visual reference only; not to scale and not used in analysis.</figcaption></figure>
+    <figure><img src="img/bathroom_3d_concept.jpg" alt="AI-generated 3D illustration of the bathroom" loading="lazy"><figcaption>Bathroom, AI-generated 3D illustration. For visual reference only.</figcaption></figure>
+  </div>
+
+  <h2 id="setup">How we recorded</h2>
+  <ul>
+    <li>One phone played <code>claps.wav</code>; a second device, held by hand, recorded. One take per position, four positions per room.</li>
+    <li>Recordings are stereo AAC at 48 kHz; we average the channels to mono.</li>
+    <li>Playback and recording were <strong>not synchronized</strong>, so we align signals afterwards using the strongest peak.</li>
+    <li>Distances from furniture to walls were not measured, so the plans show layout only and are not used to compute reflection paths.</li>
+  </ul>
+
+  <h2 id="audio">Listen to every file</h2>
+  <div class="audio-list">
+    <div class="audio-item"><div class="t">claps.wav <span class="tag orig">original</span></div><audio controls preload="none" src="audio/claps.wav"></audio></div>
+    <div class="audio-item"><div class="t">Single echo <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/single_echo.wav"></audio></div>
+    <div class="audio-item"><div class="t">Multiple reflections <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/multiple_reflections.wav"></audio></div>
+    <div class="audio-item"><div class="t">Early reflections + tail <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/decay_tail_C.wav"></audio></div>
+    <div class="audio-item"><div class="t">Bedroom 1 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom1.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bedroom 2 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom2.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bedroom 3 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom3.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bedroom 4 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom4.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bathroom 1 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom1.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bathroom 2 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom2.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bathroom 3 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom3.m4a"></audio></div>
+    <div class="audio-item"><div class="t">Bathroom 4 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom4.m4a"></audio></div>
+  </div>
+  <p class="meta">Code: <a href="code/echo.py">echo.py</a> (simulation) · <a href="code/analysis.py">analysis.py</a> (estimation and report figures) · <a href="code/generate_plots.py">generate_plots.py</a> (the three plots on this site).</p>
+
+  <div class="pager"><a href="index.html">← Overview</a><a href="plots.html">Three new plots →</a></div>
+</main>
+<footer>EECS 351 Digital Signal Processing · Fall 2026 · Yiheng Li, Yongjia Xia, Yingqian Sun</footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 1210" width="1120" height="1210">
+<defs><marker id="a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,5 L10,0 L10,10 Z" fill="#252525"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<text x="80" y="72" font-family="Arial,sans-serif" font-size="32" font-weight="bold" fill="#222">Room Two</text>
+
+<line x1="335" y1="170" x2="845" y2="170" stroke="#252525" stroke-width="4" />
+<line x1="335" y1="170" x2="335" y2="986" stroke="#252525" stroke-width="4" />
+<line x1="845" y1="170" x2="845" y2="986" stroke="#252525" stroke-width="4" />
+<line x1="335" y1="986" x2="845" y2="986" stroke="#252525" stroke-width="4" />
+<rect x="335" y="170" width="510" height="255" fill="white" stroke="#252525" stroke-width="3"/>
+<text x="590" y="307" font-family="Arial,sans-serif" font-size="34" fill="#222" text-anchor="middle" font-weight="normal">BATHTUB</text>
+<rect x="375" y="458" width="232" height="205" fill="white" stroke="#252525" stroke-width="3"/>
+<path d="M385,560 L450,465 M430,650 L560,465 M515,650 L605,500 M580,650 L605,575" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="607" y="493" width="136" height="112" fill="white" stroke="#252525" stroke-width="3"/>
+<rect x="743" y="493" width="102" height="112" fill="white" stroke="#252525" stroke-width="3"/>
+<text x="675" y="555" font-family="Arial,sans-serif" font-size="17" fill="#222" text-anchor="middle" font-weight="normal">TOILET</text>
+<text x="794" y="555" font-family="Arial,sans-serif" font-size="15" fill="#222" text-anchor="middle" font-weight="normal">TANK</text>
+<line x1="743" y1="630" x2="845" y2="630" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="794" y="660" font-family="Arial,sans-serif" font-size="17" fill="#222" text-anchor="middle" font-weight="normal">30 cm tank</text>
+<rect x="681" y="724" width="164" height="262" fill="white" stroke="#252525" stroke-width="3"/>
+<path d="M735,767 C716,769 706,788 707,813 L707,893 C709,914 719,927 739,930 L777,930 C795,928 806,914 807,893 L807,812 C805,784 796,768 777,767 Z" fill="none" stroke="#252525" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M807,841 L824,835 L844,835 M807,855 L824,861 L844,861" fill="none" stroke="#252525" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="763" y="959" font-family="Arial,sans-serif" font-size="17" fill="#222" text-anchor="middle" font-weight="normal">SINK</text>
+<circle cx="590" cy="578" r="12" fill="#e34332" stroke="white" stroke-width="3"/><path d="M555,556 Q570,533 585,537 M594,537 Q611,543 617,559" fill="none" stroke="#e34332" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="310" cy="1010" r="23" fill="white" stroke="#1476d8" stroke-width="4"/><text x="310" y="1018" font-family="Arial,sans-serif" font-size="26" fill="#1476d8" text-anchor="middle" font-weight="normal">1</text>
+<circle cx="310" cy="145" r="23" fill="white" stroke="#1476d8" stroke-width="4"/><text x="310" y="153" font-family="Arial,sans-serif" font-size="26" fill="#1476d8" text-anchor="middle" font-weight="normal">2</text>
+<circle cx="870" cy="145" r="23" fill="white" stroke="#1476d8" stroke-width="4"/><text x="870" y="153" font-family="Arial,sans-serif" font-size="26" fill="#1476d8" text-anchor="middle" font-weight="normal">3</text>
+<circle cx="870" cy="1010" r="23" fill="white" stroke="#1476d8" stroke-width="4"/><text x="870" y="1018" font-family="Arial,sans-serif" font-size="26" fill="#1476d8" text-anchor="middle" font-weight="normal">4</text>
+<line x1="335" y1="130" x2="845" y2="130" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="590" y="120" font-family="Arial,sans-serif" font-size="26" fill="#222" text-anchor="middle" font-weight="normal">1.5 m</text>
+<line x1="275" y1="170" x2="275" y2="986" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="210" y="590" font-family="Arial,sans-serif" font-size="26" fill="#222" text-anchor="middle" font-weight="normal">2.4 m</text>
+<line x1="365" y1="172" x2="365" y2="425" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="378" y="314" font-family="Arial,sans-serif" font-size="19" fill="#222" text-anchor="start" font-weight="normal">75 cm</text>
+<line x1="607" y1="452" x2="845" y2="452" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="726" y="480" font-family="Arial,sans-serif" font-size="18" fill="#222" text-anchor="middle" font-weight="normal">70 cm</text>
+<line x1="665" y1="724" x2="665" y2="986" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="653" y="858" font-family="Arial,sans-serif" font-size="20" fill="#222" text-anchor="end" font-weight="normal">77 cm</text>
+<line x1="681" y1="1030" x2="845" y2="1030" stroke="#252525" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="763" y="1063" font-family="Arial,sans-serif" font-size="20" fill="#222" text-anchor="middle" font-weight="normal">48 cm</text>
+<circle cx="100" cy="1144" r="9" fill="#e34332"/>
+<text x="122" y="1150" font-family="Arial,sans-serif" font-size="18" fill="#222" text-anchor="start" font-weight="normal">Sound source</text>
+<circle cx="345" cy="1144" r="15" fill="white" stroke="#1476d8" stroke-width="3"/>
+<text x="345" y="1150" font-family="Arial,sans-serif" font-size="18" fill="#1476d8" text-anchor="middle" font-weight="normal">1</text>
+<text x="373" y="1150" font-family="Arial,sans-serif" font-size="18" fill="#222" text-anchor="start" font-weight="normal">Recorder positions 1–4</text>
+</svg>

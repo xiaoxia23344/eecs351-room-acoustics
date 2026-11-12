@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three New Plots · Room Acoustics</title>
+<meta name="description" content="Three new plots of our room-acoustics data: short-time energy, frequency-dependent clarity, and decay time vs. clarity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">Room Acoustics · EECS 351</a>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="data.html">Our Data</a>
+    <a href="plots.html" aria-current="page">Three Plots</a>
+    <a href="progress.html">Progress &amp; Challenges</a>
+    <a href="plan.html">Plan</a>
+    <a href="learned.html">What We Learned</a>
+  </nav>
+</div></header>
+
+<main>
+  <p class="eyebrow">Part 2 · New plots</p>
+  <h1>Three new plots of our data</h1>
+  <p class="lede">Each plot answers one question: how sound energy spreads over time, whether the room comparison depends on frequency, and whether slower decay goes with lower clarity.</p>
+
+  <div class="toc"><ol>
+    <li><a href="#plot1">Plot 1: short-time energy of all 12 signals</a> (uses <strong>every</strong> data type)</li>
+    <li><a href="#plot2">Plot 2: clarity \(C_{50}\) by octave band</a></li>
+    <li><a href="#plot3">Plot 3: early decay time vs. clarity</a></li>
+    <li><a href="#takeaway">Together</a></li>
+  </ol></div>
+
+  <!-- ================= PLOT 1 ================= -->
+  <h2 id="plot1">Plot 1 · Short-time energy across original, simulated and recorded audio</h2>
+  <figure>
+    <img src="img/plot1_energy_heatmap.png" alt="Heatmap of 5-ms energy in dB versus time for 12 audio signals: original clap, three simulated, four bedroom and four bathroom recordings" loading="lazy">
+    <figcaption>Each row is one audio file; color is the 5-ms energy relative to that row's own peak (0 dB = brightest, −50 dB = black). Time 0 is the selected clap peak.</figcaption>
+  </figure>
+
+  <div class="qa">
+    <div><span class="k">Question</span>How do distinct echoes, a dense reverberant tail, and real rooms change the way energy is spread out in time after a clap?</div>
+    <div><span class="k">Data</span>All 12 audio signals, so all of our data types: the original clap, the three simulated outputs (single echo, multiple reflections, decay tail), the four bedroom recordings and the four bathroom recordings.</div>
+  </div>
+
+  <h3>How we made it</h3>
+  <ol>
+    <li>The three simulated outputs are recomputed by FFT convolution, \(y = x * h\), using the impulse responses on the <a href="data.html#simulated">data page</a>.</li>
+    <li>For every signal we square the samples and average over a centered 5-ms window:
+      \[ E[n] = \frac{1}{M}\sum_{m\in W_n} x^2[m], \qquad E_{\text{rel}}[n] = 10\log_{10}\frac{E[n]}{\max_j E[j]}. \]</li>
+    <li>Alignment: the original and simulated signals are aligned to the strongest clap in the original. Each room recording is aligned to <em>its own</em> strongest clap, because playback and recording were not synchronized. These may not be the same clap in every file.</li>
+    <li>We show 20 ms before to 400 ms after that peak. Each row is normalized to its own maximum on a shared −50 to 0 dB color scale, so the plot compares <em>how long energy lasts relative to each signal's peak</em>, not absolute loudness.</li>
+  </ol>
+
+  <h3>What it shows</h3>
+  <ul>
+    <li><strong>Original clap:</strong> a sharp transient and a short fading tail, mostly dark after ~130 ms.</li>
+    <li><strong>Single echo:</strong> a clearly separate second bright band at 250 ms, exactly the designed delay.</li>
+    <li><strong>Multiple reflections:</strong> bright bands at 150 and 300 ms as designed (the 500-ms reflection is outside the window). The extra feature around 50 ms is likely a delayed copy of an <em>earlier</em> clap: the input has 12 claps, and convolution adds reflections to every one of them.</li>
+    <li><strong>Decay tail:</strong> no separate bands, just a smooth fade from bright to dark, which is what reverberation looks like, compared with discrete echoes.</li>
+    <li><strong>Real rooms:</strong> energy is dense and continuous, with no isolated echoes. Several rows (Bedroom 3, Bathroom 4) stay bright late in the window.</li>
+  </ul>
+  <div class="note"><strong>Caution.</strong> Late brightness in the recorded rows is not automatically reverberation. It can also be background noise, the phone's gain control, the next clap arriving (claps are ~450 ms apart), or alignment error. That is why we measure reverberation on the estimated impulse responses instead (Plots 2 and 3).</div>
+
+  <!-- ================= PLOT 2 ================= -->
+  <h2 id="plot2">Plot 2 · Frequency-dependent clarity in the two rooms</h2>
+  <figure>
+    <img src="img/plot2_frequency_clarity.png" alt="Line plot of clarity C50 in dB versus octave band 500 to 4000 Hz for bedroom and bathroom" loading="lazy">
+    <figcaption>Blue: bedroom. Orange: bathroom. Heavy line: room mean. Faint dots: individual positions. Vertical bar: range across positions.</figcaption>
+  </figure>
+
+  <div class="qa">
+    <div><span class="k">Question</span>Does the ratio of early to late sound energy differ between the bedroom and the bathroom, and does the answer depend on frequency?</div>
+    <div><span class="k">Data</span>The eight room recordings and the known input <code>claps.wav</code>.</div>
+  </div>
+
+  <h3>How we made it</h3>
+  <ol>
+    <li><strong>Estimate the impulse response</strong> at each position by regularized frequency-domain deconvolution (explained on <a href="learned.html">What We Learned</a>):
+      \[ \widehat H[k] = \frac{Y[k]\,X^*[k]}{|X[k]|^2+\epsilon}, \qquad \epsilon = 0.01\max_k|X[k]|^2. \]
+      Inverse FFT, align to the strongest peak, crop from 2 ms before to 1 s after.</li>
+    <li><strong>Split into octave bands</strong> centered at 500, 1000, 2000 and 4000 Hz with 4th-order Butterworth band-pass filters, run forward and backward (<code>filtfilt</code>) so there is no phase shift.</li>
+    <li><strong>Compute clarity</strong> in each band, the ratio of energy in the first 50 ms to the energy after:
+      \[ C_{50}(f_c) = 10\log_{10}\frac{\sum_{0\le t<50\,\text{ms}} h_{f_c}^2(t)}{\sum_{t\ge 50\,\text{ms}} h_{f_c}^2(t)}. \]
+      A late noise floor is estimated and subtracted, and the sum stops where the response reaches it.</li>
+    <li><strong>Quality check:</strong> keep a band only if its peak-to-noise ratio is at least 12 dB and at least 60 ms of usable response remains. 30 of 32 band/position pairs pass; bedroom position 2 at 500 Hz (only 56 ms usable) and bedroom position 4 at 4000 Hz (PNR 11.7 dB) are dropped.</li>
+  </ol>
+
+  <h3>What it shows</h3>
+  <div class="tbl"><table>
+    <thead><tr><th class="r">Band</th><th class="r">Bedroom mean C<sub>50</sub></th><th class="r">Bathroom mean C<sub>50</sub></th><th class="r">Difference (bed − bath)</th></tr></thead>
+    <tbody>
+      <tr><td class="r">500 Hz</td><td class="r">7.02 dB (3/4)</td><td class="r">6.14 dB (4/4)</td><td class="r">+0.88 dB</td></tr>
+      <tr><td class="r">1000 Hz</td><td class="r">9.11 dB (4/4)</td><td class="r">6.26 dB (4/4)</td><td class="r">+2.85 dB</td></tr>
+      <tr><td class="r">2000 Hz</td><td class="r">9.42 dB (4/4)</td><td class="r">10.22 dB (4/4)</td><td class="r">−0.80 dB</td></tr>
+      <tr><td class="r">4000 Hz</td><td class="r">10.93 dB (3/4)</td><td class="r">11.86 dB (4/4)</td><td class="r">−0.93 dB</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>The bedroom is clearer in the <strong>low bands</strong>, most at 1 kHz (+2.85 dB). Above 2 kHz the order flips and the bathroom is slightly clearer.</li>
+    <li>Both rooms get clearer at higher frequencies. This is consistent with high frequencies being absorbed faster by surfaces and air, so less of their energy arrives late.</li>
+    <li>\(C_{50}\) compares early to late energy <em>within a band</em>. It does not say which room has more high-frequency energy overall.</li>
+    <li>The position ranges overlap a lot, especially at 2 kHz, so the small high-frequency differences are not strong evidence. The 1 kHz gap is the most convincing.</li>
+  </ul>
+  <div class="note"><strong>Limits.</strong> Each estimate includes the phone speaker and microphone, not just the room. Each position was recorded once. The rooms also differ in size, contents, source placement and recorder placement, so these are differences <em>in this dataset</em>, not isolated material effects.</div>
+
+  <!-- ================= PLOT 3 ================= -->
+  <h2 id="plot3">Plot 3 · Early decay time vs. clarity</h2>
+  <figure>
+    <img src="img/plot3_edt_vs_clarity.png" alt="Scatter plot of clarity C50 versus early decay time for four bedroom and four bathroom positions, with room means as diamonds" loading="lazy">
+    <figcaption>Each dot is one recorder position (numbered 1–4). Diamonds are room means. Blue: bedroom. Orange: bathroom.</figcaption>
+  </figure>
+
+  <div class="qa">
+    <div><span class="k">Question</span>Do positions where sound dies away more slowly at first also have lower clarity?</div>
+    <div><span class="k">Data</span>Broadband (300 Hz – 8 kHz) EDT and \(C_{50}\) for all eight positions, computed in our first report from the estimated impulse responses.</div>
+  </div>
+
+  <h3>How we made it</h3>
+  <ol>
+    <li>From each estimated impulse response we compute the Schroeder energy-decay curve, \(\mathrm{EDC}(t) = 10\log_{10}\frac{\int_t^\infty h^2\,d\tau}{\int_0^\infty h^2\,d\tau}\).</li>
+    <li><strong>EDT</strong> (early decay time): fit a line to the EDC between 0 and −10 dB and extrapolate to −60 dB. We use EDT rather than the usual \(T_{20}\) because our noise floor is only 19–24 dB below the peak, not the 35 dB that \(T_{20}\) needs.</li>
+    <li><strong>\(C_{50}\)</strong>: broadband version of the clarity metric from Plot 2.</li>
+    <li>EDT on the x-axis, \(C_{50}\) on the y-axis, one point per position, plus the mean of each room. The values are the same as Table 4 of our first report, so this plot shows the relationship between two existing metrics rather than new measurements.</li>
+  </ol>
+
+  <h3>What it shows</h3>
+  <div class="stats">
+    <div class="stat"><div class="v">0.32 s · 9.7 dB</div><div class="l">Bedroom mean EDT · C<sub>50</sub></div></div>
+    <div class="stat b"><div class="v">0.40 s · 7.6 dB</div><div class="l">Bathroom mean EDT · C<sub>50</sub></div></div>
+  </div>
+  <ul>
+    <li>The two rooms form two separate clusters. <strong>Every</strong> bathroom position has a longer EDT (0.38–0.42 s) than every bedroom position (0.28–0.36 s), and <strong>every</strong> bathroom position has lower clarity (7.0–8.3 dB vs. 8.8–10.7 dB).</li>
+    <li>Within the bedroom the trend is also roughly downward; within the bathroom there is no clear trend. So the relationship is mostly a difference <em>between</em> the rooms. That both metrics move together is expected, since both depend on how quickly the first ~50–100 ms of energy fades.</li>
+    <li>This fits the hard, reflective surfaces of the bathroom: by Sabine's relation \(T_{60}\approx 0.161\,V/A\), a smaller room only decays faster if its absorption \(A\) does not shrink just as much.</li>
+  </ul>
+  <div class="note"><strong>Association, not cause.</strong> Both metrics come from the same impulse responses, and the rooms differ in several uncontrolled ways. Four positions with one take each cannot establish a general relationship. A controlled test is in our <a href="plan.html">plan</a>.</div>
+
+  <h2 id="takeaway">Together</h2>
+  <p><strong>Plot 1</strong> shows all of our data on one time axis and makes the difference between discrete echoes, a modeled reverberant tail and real rooms visible. <strong>Plot 2</strong> shows that the room comparison depends on frequency. <strong>Plot 3</strong> shows that the bathroom consistently decays more slowly at first and is less clear. All three also show why uncontrolled real-world recordings need careful interpretation, which drives our <a href="plan.html">next steps</a>.</p>
+  <p class="meta">Code: <a href="code/generate_plots.py">generate_plots.py</a> · Data: <a href="code/plot2_band_metrics.csv">plot2_band_metrics.csv</a>, <a href="code/plot3_table4_metrics.csv">plot3_table4_metrics.csv</a></p>
+
+  <div class="pager"><a href="data.html">← Our data</a><a href="progress.html">Progress &amp; challenges →</a></div>
+</main>
+<footer>EECS 351 Digital Signal Processing · Fall 2026 · Yiheng Li, Yongjia Xia, Yingqian Sun</footer>
+</body>
+</html>

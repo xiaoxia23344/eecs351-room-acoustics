@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What We Learned · Room Acoustics</title>
+<meta name="description" content="Why dividing spectra to recover an impulse response fails, and how regularized deconvolution fixes it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  .demo { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 22px 0; }
+  .demo canvas { width: 100%; height: 300px; display: block; }
+  .demo .ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font: 14px "Inter", sans-serif; margin-top: 10px; }
+  .demo input[type=range] { flex: 1 1 200px; accent-color: var(--accent); }
+  .demo .val { font-variant-numeric: tabular-nums; min-width: 9ch; font-weight: 600; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 13px "Inter", sans-serif; color: var(--muted); margin-top: 6px; }
+  .legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">Room Acoustics · EECS 351</a>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="data.html">Our Data</a>
+    <a href="plots.html">Three Plots</a>
+    <a href="progress.html">Progress &amp; Challenges</a>
+    <a href="plan.html">Plan</a>
+    <a href="learned.html" aria-current="page">What We Learned</a>
+  </nav>
+</div></header>
+
+<main>
+  <p class="eyebrow">Part 5 · Something new</p>
+  <h1>What we learned: regularized deconvolution</h1>
+  <p class="lede">To measure a room, we needed to undo a convolution. The textbook answer, "divide the spectra", turned out not to work on real data. Learning why, and how to fix it, became the core of our measurement method.</p>
+
+  <h2>The problem: getting \(h[n]\) back</h2>
+  <p>We know what the phone played, \(x[n]\), and we recorded what the room did to it, \(y[n] = x[n] * h[n] + \text{noise}\). We want \(h[n]\).</p>
+  <p><strong>First attempt: treat the recording as \(h[n]\).</strong> If \(x\) were a perfect impulse, the recording would be the impulse response. Our input is 12 claps 0.45 s apart, so each clap's tail runs into the next one. This gave reverberation times of 3–12 s for rooms that obviously ring for well under half a second.</p>
+  <p><strong>Second attempt: divide.</strong> Convolution becomes multiplication in frequency, so \(H[k] = Y[k]/X[k]\). This is correct only without noise. Wherever the input has almost no energy (\(|X[k]|\) close to 0: below ~300 Hz for a phone speaker, very high frequencies, and the notches a clap train puts in its own spectrum), we divide noise by a tiny number. Those bins dominate the result, and \(\hat h[n]\) turns into loud noise.</p>
+
+  <h2>The fix: add a small \(\epsilon\)</h2>
+  <p>Multiply top and bottom by \(X^*[k]\) and add a small constant in the denominator:</p>
+  <div class="formula">\[ \widehat H[k] = \frac{Y[k]\,X^*[k]}{|X[k]|^2+\epsilon}, \qquad \epsilon = 10^{-2}\,\max_k |X[k]|^2 \]</div>
+  <ul>
+    <li>Where the input is strong (\(|X|^2 \gg \epsilon\)), this is just \(Y/X\), the exact answer.</li>
+    <li>Where the input is weak (\(|X|^2 \ll \epsilon\)), it becomes \(Y X^*/\epsilon \approx 0\). We simply don't trust those frequencies, instead of amplifying noise.</li>
+    <li>\(\epsilon\) is a trade-off: too small and noise comes back; too large and we smooth away real detail. This is a simple form of Tikhonov regularization, closely related to a Wiener deconvolution filter, where \(\epsilon\) plays the role of the noise-to-signal ratio.</li>
+  </ul>
+  <p>Drag the slider to see what \(\epsilon\) does to the inverse filter's gain, \(|X|/(|X|^2+\epsilon)\), for an illustrative clap-like spectrum:</p>
+
+  <div class="demo">
+    <canvas id="cv" role="img" aria-label="Gain of the naive inverse filter versus the regularized inverse filter across frequency"></canvas>
+    <div class="legend">
+      <span><i style="background:#9aa3ad"></i>Input spectrum |X| (illustrative)</span>
+      <span><i style="background:#c8612e"></i>Naive inverse 1/|X|</span>
+      <span><i style="background:#1f5fa8"></i>Regularized inverse</span>
+    </div>
+    <div class="ctl">
+      <label for="eps">\(\epsilon\) relative to \(\max|X|^2\)</label>
+      <input id="eps" type="range" min="-5" max="0" step="0.1" value="-2">
+      <span class="val" id="epsv">10<sup>−2</sup></span>
+    </div>
+  </div>
+  <p>The naive inverse (orange) shoots up by as much as 40 dB exactly where the input is weakest, which is where the recording is mostly noise. The regularized inverse (blue) follows it where the input is strong and stops boosting where it is weak.</p>
+
+  <h2>Two details that mattered</h2>
+  <ol>
+    <li><strong>FFT length.</strong> Multiplying DFTs gives <em>circular</em> convolution. To get the linear one, the FFT length has to be at least \(N_x + N_y\), otherwise the end of the response wraps around to the start.</li>
+    <li><strong>Unknown delay.</strong> Our recorder was not started in sync with playback, so \(\hat h[n]\) appears at an arbitrary lag. We shift it circularly, find its largest peak, and crop from 2 ms before to 1 s after.</li>
+  </ol>
+
+  <h2>Did it work?</h2>
+  <p>Before trusting it on real rooms, we tested it on synthetic data with known reverberation times, \(T_{60}\) = 0.5 s and 0.8 s. Our code recovered both within 0.01 s. On the real recordings it gave plausible values (EDT 0.28–0.42 s) where the "recording as \(h\)" approach gave 3–12 s.</p>
+
+  <h2>Why it matters for our project</h2>
+  <p>Every room result on this site (the impulse responses, decay curves, EDT, \(C_{50}\), and Plots 2 and 3) depends on this step. It also explains our next steps: regularization can only refuse to boost frequencies the input doesn't contain; it cannot recover them. A clap train is a poor input because its energy is uneven and its spectrum has notches. An exponential sine sweep puts steady energy at every frequency, so \(|X|^2\) is large everywhere and \(\epsilon\) barely matters. That is why the sine sweep is <a href="plan.html">first in our plan</a>.</p>
+
+  <div class="note"><strong>Also new to us:</strong> the Schroeder energy-decay curve. Integrating \(h^2\) backwards from the end, \(\mathrm{EDC}(t) = \int_t^\infty h^2(\tau)\,d\tau\), turns a noisy, spiky impulse response into a smooth curve, and its slope gives the decay time directly. It is how we get EDT and \(T_{10}\).</div>
+
+  <div class="pager"><a href="plan.html">← Plan</a><a href="index.html">Back to overview →</a></div>
+</main>
+<footer>EECS 351 Digital Signal Processing · Fall 2026 · Yiheng Li, Yongjia Xia, Yingqian Sun</footer>
+
+<script>
+(function () {
+  const cv = document.getElementById('cv'), slider = document.getElementById('eps'), out = document.getElementById('epsv');
+  const fmin = 50, fmax = 16000, N = 400;
+  const freqs = Array.from({length: N}, (_, i) => fmin * Math.pow(fmax / fmin, i / (N - 1)));
+  // Illustrative clap-train magnitude (dB): weak below ~300 Hz, broad mid peak, falls above 5 kHz, with notches.
+  const XdB = freqs.map(f => {
+    const lf = -40 / (1 + Math.pow(f / 250, 3));
+    const hf = -30 / (1 + Math.pow(5000 / f, 3));
+    const mid = 3 * Math.exp(-Math.pow(Math.log(f / 1000), 2));
+    const notch = -22 * Math.exp(-Math.pow(Math.log(f / 2600) / 0.06, 2)) - 16 * Math.exp(-Math.pow(Math.log(f / 700) / 0.04, 2));
+    return lf + hf + mid + notch;
+  });
+  const Xmag = XdB.map(d => Math.pow(10, d / 20));
+  const maxX2 = Math.max(...Xmag.map(x => x * x));
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  function draw() {
+    const e = Math.pow(10, +slider.value) * maxX2;
+    out.innerHTML = '10<sup>' + (+slider.value).toFixed(1).replace('-', '−').replace('.0', '') + '</sup>';
+    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const L = 44, R = 10, T = 10, B = 30, ymin = -50, ymax = 60;
+    const x = f => L + (W - L - R) * Math.log(f / fmin) / Math.log(fmax / fmin);
+    const y = d => T + (H - T - B) * (ymax - Math.max(ymin, Math.min(ymax, d))) / (ymax - ymin);
+    g.clearRect(0, 0, W, H);
+    g.font = '11px Inter, sans-serif'; g.fillStyle = css('--muted'); g.strokeStyle = css('--line'); g.lineWidth = 1;
+    [100, 300, 1000, 3000, 10000].forEach(f => { g.beginPath(); g.moveTo(x(f), T); g.lineTo(x(f), H - B); g.stroke(); g.textAlign = 'center'; g.fillText(f >= 1000 ? f / 1000 + 'k' : f, x(f), H - B + 14); });
+    for (let d = -40; d <= 60; d += 20) { g.beginPath(); g.moveTo(L, y(d)); g.lineTo(W - R, y(d)); g.stroke(); g.textAlign = 'right'; g.fillText(d + ' dB', L - 4, y(d) + 4); }
+    g.textAlign = 'center'; g.fillText('Frequency (Hz)', L + (W - L - R) / 2, H - 2);
+    function line(vals, col, w) { g.strokeStyle = col; g.lineWidth = w; g.beginPath(); vals.forEach((d, i) => { const px = x(freqs[i]), py = y(d); i ? g.lineTo(px, py) : g.moveTo(px, py); }); g.stroke(); }
+    line(XdB, '#9aa3ad', 2);
+    line(XdB.map(d => -d), '#c8612e', 2);
+    line(Xmag.map(m => 20 * Math.log10(m / (m * m + e))), css('--accent'), 2.5);
+  }
+  slider.addEventListener('input', draw);
+  window.addEventListener('resize', draw);
+  draw();
+})();
+</script>
+</body>
+</html>
