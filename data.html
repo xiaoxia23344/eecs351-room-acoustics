@@ -32,10 +32,9 @@
   <div class="toc"><ol>
     <li><a href="#types">Data types at a glance</a></li>
     <li><a href="#input">The input: a clap recording</a></li>
-    <li><a href="#simulated">Simulated room outputs</a></li>
-    <li><a href="#rooms">The two real rooms and recorder positions ①–④</a></li>
+    <li><a href="#simulated">Simulated room outputs (with audio)</a></li>
+    <li><a href="#rooms">The two real rooms: positions ①–④ and recordings</a></li>
     <li><a href="#setup">How we recorded</a></li>
-    <li><a href="#audio">Listen to the input and simulations</a></li>
     <li><a href="#reference">Reference: original hand sketches</a></li>
   </ol></div>
 
@@ -53,29 +52,31 @@
   <p>From these we compute further data: estimated room impulse responses \(\hat h[n]\), energy-decay curves, spectra, and room-acoustic metrics (EDT, \(T_{10}\), DRR, \(C_{50}\)).</p>
 
   <h2 id="input">The input: a clap recording</h2>
-  <p><code>claps.wav</code> contains a series of 12 hand claps about 0.45 s apart. A clap is a short, broadband burst, so it is a rough stand-in for an impulse. It is not a perfect one: it lasts a few milliseconds, has its own spectrum, and the claps vary in loudness (from 0.18 to 1.00 of the loudest). Because the hands were close to the microphone, the direct sound dominates, but there is still a short tail from the room it was recorded in.</p>
+  <div class="split">
+    <div>
+      <p><code>claps.wav</code> contains a series of 12 hand claps about 0.45 s apart. A clap is a short, broadband burst, so it is a rough stand-in for an impulse. It is not a perfect one: it lasts a few milliseconds, has its own spectrum, and the claps vary in loudness (from 0.18 to 1.00 of the loudest). Because the hands were close to the microphone, the direct sound dominates, but there is still a short tail from the room it was recorded in.</p>
+    </div>
+    <div class="side-audio">
+      <div class="audio-item"><div class="t">claps.wav <span class="tag orig">original</span></div><audio controls preload="none" src="audio/claps.wav"></audio></div>
+    </div>
+  </div>
 
   <h2 id="simulated">Simulated room outputs</h2>
-  <p>Each synthetic impulse response is an impulse at time zero (the direct sound) plus smaller, delayed impulses (reflections). We compute \(y = x * h\) with <code>scipy.signal.fftconvolve</code>.</p>
-  <div class="tbl"><table>
-    <thead><tr><th>Model</th><th>Delays (s)</th><th>Amplitudes</th></tr></thead>
-    <tbody>
-      <tr><td>Single echo</td><td>0, 0.25</td><td>1.00, 0.60</td></tr>
-      <tr><td>Multiple reflections</td><td>0, 0.15, 0.30, 0.50</td><td>1.00, 0.60, 0.35, 0.20</td></tr>
-      <tr><td>Early reflections + decay tail</td><td>0, 0.007, 0.012, 0.018, then noise tail from 0.020</td><td>1.00, 0.50, 0.40, 0.30; tail \(T_{60}=0.40\) s, DRR 0 dB</td></tr>
-    </tbody>
-  </table></div>
-  <figure>
-    <img src="img/impulse_responses.png" alt="Stem plots of the single-echo and multiple-reflection impulse responses" loading="lazy">
-    <figcaption>The two discrete-echo impulse responses. The third model (millisecond reflections plus an exponentially decaying noise tail) was added because real reflections in a small room arrive within tens of milliseconds, not hundreds.</figcaption>
-  </figure>
-  <figure>
-    <img src="img/fig0_tail_model.png" alt="The early-reflections-plus-decay-tail impulse response" loading="lazy">
-    <figcaption>The third synthetic impulse response: direct sound, three early reflections, and a noise tail designed to decay by 60 dB in 0.40 s.</figcaption>
-  </figure>
+  <p>Each synthetic impulse response is an impulse at time zero (the direct sound) plus smaller, delayed impulses (reflections). We compute \(y = x * h\) with <code>scipy.signal.fftconvolve</code>. The third model was added because real reflections in a small room arrive within tens of milliseconds, not hundreds.</p>
+  <div class="room-grid" id="audio">
+    <div class="room-visual">
+      <figure><img src="img/impulse_responses.png" alt="Stem plots of the single-echo and multiple-reflection impulse responses" loading="lazy"><figcaption>Single echo and multiple reflections.</figcaption></figure>
+      <figure><img src="img/fig0_tail_model.png" alt="The early-reflections-plus-decay-tail impulse response and its energy decay" loading="lazy"><figcaption>Early reflections + noise tail, designed to fall 60 dB in 0.40 s.</figcaption></figure>
+    </div>
+    <ol class="pos-list">
+      <li><span class="pin sim">A</span><div><strong>Single echo</strong><br><span class="meta">Delays 0, 0.25 s · amplitudes 1.00, 0.60</span><audio controls preload="none" src="audio/single_echo.wav"></audio></div></li>
+      <li><span class="pin sim">B</span><div><strong>Multiple reflections</strong><br><span class="meta">Delays 0, 0.15, 0.30, 0.50 s · amplitudes 1.00, 0.60, 0.35, 0.20</span><audio controls preload="none" src="audio/multiple_reflections.wav"></audio></div></li>
+      <li><span class="pin sim">C</span><div><strong>Early reflections + decay tail</strong><br><span class="meta">Reflections at 7, 12, 18 ms (0.50, 0.40, 0.30), then a noise tail from 20 ms with \(T_{60}=0.40\) s, DRR 0 dB</span><audio controls preload="none" src="audio/decay_tail_C.wav"></audio></div></li>
+    </ol>
+  </div>
 
   <h2 id="rooms">The two real rooms</h2>
-  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches. In each room the phone (red dot) played <code>claps.wav</code> from the middle of the room, and the recorder was held at four positions, labeled <strong>①–④</strong> on every sketch and plan.</p>
+  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches. In each room the phone (red dot) played <code>claps.wav</code> from the middle of the room, and the recorder was held at four positions, labeled <strong>①–④</strong> on every plan.</p>
   <div class="tbl"><table>
     <thead><tr><th>Factor</th><th>Room One: bedroom</th><th>Room Two: bathroom</th></tr></thead>
     <tbody>
@@ -91,13 +92,13 @@
   <!-- ---------- Room One ---------- -->
   <section class="room" id="bedroom">
     <h3>Room One · Bedroom</h3>
-    <div class="room-imgs">
-      <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="3D illustration of the bedroom with bed, center shelf, desk and doorway" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
-      <figure><img src="img/bedroom_plan.png" alt="Clean bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone (sound source). Blue ①–④: recorder positions.</figcaption></figure>
-    </div>
-    <div class="room-detail single">
-      <div class="positions">
-        <p class="pos-note"><strong>Positions ①–④ are at the middle of each wall</strong> (not the corners), held at the same height as the phone.</p>
+    <div class="room-grid">
+      <div class="room-visual">
+        <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="3D illustration of the bedroom with bed, center shelf, desk and doorway" loading="lazy"><figcaption>3D illustration (AI-generated, not to scale).</figcaption></figure>
+        <figure><img src="img/bedroom_plan.png" alt="Measured bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recorder.</figcaption></figure>
+      </div>
+      <div>
+        <p class="pos-note"><strong>①–④ are at the middle of each wall</strong> (not the corners), at the same height as the phone.</p>
         <ol class="pos-list">
           <li><span class="pin bed">1</span><div><strong>Left wall, middle</strong><br><span class="meta">Open floor between the desk and the corner shelf.</span><audio controls preload="none" src="audio/bedroom1.m4a"></audio></div></li>
           <li><span class="pin bed">2</span><div><strong>Bottom wall, middle</strong><br><span class="meta">Wall next to the corridor opening.</span><audio controls preload="none" src="audio/bedroom2.m4a"></audio></div></li>
@@ -111,13 +112,13 @@
   <!-- ---------- Room Two ---------- -->
   <section class="room" id="bathroom">
     <h3>Room Two · Bathroom</h3>
-    <div class="room-imgs">
-      <figure><img src="img/bathroom_3d_concept.jpg" alt="3D illustration of the bathroom with bathtub, toilet, sink and floor mat" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
-      <figure><img src="img/bathroom_plan.png" alt="Clean bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone (sound source). Blue ①–④: recorder positions.</figcaption></figure>
-    </div>
-    <div class="room-detail single">
-      <div class="positions">
-        <p class="pos-note"><strong>Positions ①–④ are the four corners of the room</strong>, recorder held by hand 0.90 m above the floor.</p>
+    <div class="room-grid">
+      <div class="room-visual">
+        <figure><img src="img/bathroom_3d_concept.jpg" alt="3D illustration of the bathroom with bathtub, toilet, sink and floor mat" loading="lazy"><figcaption>3D illustration (AI-generated, not to scale).</figcaption></figure>
+        <figure><img src="img/bathroom_plan.png" alt="Measured bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recorder.</figcaption></figure>
+      </div>
+      <div>
+        <p class="pos-note"><strong>①–④ are the four corners of the room</strong>, recorder held by hand 0.90 m above the floor.</p>
         <ol class="pos-list">
           <li><span class="pin bath">1</span><div><strong>Bottom-left corner</strong><br><span class="meta">Open floor, opposite the bathtub.</span><audio controls preload="none" src="audio/bathroom1.m4a"></audio></div></li>
           <li><span class="pin bath">2</span><div><strong>Top-left corner</strong><br><span class="meta">Above one end of the bathtub.</span><audio controls preload="none" src="audio/bathroom2.m4a"></audio></div></li>
@@ -129,6 +130,7 @@
   </section>
 
   <p>The room dimensions already predict two things. Wall-to-wall round trips \(2d/c\) are 9–24 ms, so reflections should fuse with the direct sound rather than be heard as separate echoes. The lowest room modes \(c/2d\) lie at 42–114 Hz, where a phone speaker produces almost no sound, so we cannot observe them.</p>
+
   <h2 id="setup">How we recorded</h2>
   <ul>
     <li>One phone played <code>claps.wav</code>; a second device, held by hand, recorded. One take per position, four positions per room.</li>
@@ -136,22 +138,13 @@
     <li>Playback and recording were <strong>not synchronized</strong>, so we align signals afterwards using the strongest peak.</li>
     <li>Distances from furniture to walls were not measured, so the plans show layout only and are not used to compute reflection paths.</li>
   </ul>
-
-  <h2 id="audio">Listen</h2>
-  <p>The input and the three simulated outputs are below. The eight room recordings are next to their positions in <a href="#bedroom">the bedroom</a> and <a href="#bathroom">the bathroom</a> sections above.</p>
-  <div class="audio-list">
-    <div class="audio-item"><div class="t">claps.wav <span class="tag orig">original</span></div><audio controls preload="none" src="audio/claps.wav"></audio></div>
-    <div class="audio-item"><div class="t">Single echo <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/single_echo.wav"></audio></div>
-    <div class="audio-item"><div class="t">Multiple reflections <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/multiple_reflections.wav"></audio></div>
-    <div class="audio-item"><div class="t">Early reflections + tail <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/decay_tail_C.wav"></audio></div>
-  </div>
   <p class="meta">Code: <a href="code/echo.py">echo.py</a> (simulation) · <a href="code/analysis.py">analysis.py</a> (estimation and report figures) · <a href="code/generate_plots.py">generate_plots.py</a> (the plots on the Analysis page).</p>
 
   <h2 id="reference">Reference: original hand sketches</h2>
-  <p>The measured plans above were redrawn from these hand sketches, which we made while measuring the rooms. They are included for reference only: they hold the original dimensions and notes but are not needed to follow the analysis.</p>
-  <div class="two">
-    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Original hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Bedroom. Red: phone on the center shelf. Blue ①–④: recorder at the middle of each wall.</figcaption></figure>
-    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Original hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Bathroom. Red: phone on the floor mat. Blue ①–④: recorder in each corner.</figcaption></figure>
+  <p>The measured plans above were redrawn from these hand sketches, which we made while measuring the rooms. They are included for reference only.</p>
+  <div class="sketches">
+    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Original hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Bedroom: recorder at the middle of each wall.</figcaption></figure>
+    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Original hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Bathroom: recorder in each corner.</figcaption></figure>
   </div>
 
   <div class="pager"><a href="index.html">← Overview</a><a href="plots.html">Analysis →</a></div>

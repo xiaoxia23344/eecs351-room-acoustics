@@ -180,3 +180,16 @@ h2[id], h3[id], [id] { scroll-margin-top: 90px; }
 .contents p { margin: 2px 0 0; color: var(--muted); font-size: 15.5px; }
 .room-imgs { grid-template-columns: 1.25fr 1fr; align-items: center; }
 .room-detail.single { grid-template-columns: 1fr; }
+
+/* ---------- compact side-by-side layout (data page) ---------- */
+.room-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 24px; align-items: start; margin: 10px 0 8px; }
+.room-visual figure { margin: 0 0 10px; padding: 8px; }
+.room-visual figcaption { font-size: 12.5px; margin-top: 4px; }
+.room-grid .pos-list li:first-child { padding-top: 2px; }
+.room { margin: 24px 0 28px; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; align-items: center; }
+.split p { margin: 0; }
+.sketches { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 620px; }
+.sketches figure { margin: 8px 0; padding: 8px; }
+.pin.sim { background: #6b7785; }
+@media (max-width: 720px) { .room-grid, .split { grid-template-columns: 1fr; gap: 12px; } .room-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .room-visual figure { margin: 0; } }
