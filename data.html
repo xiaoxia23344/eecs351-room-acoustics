@@ -33,9 +33,9 @@
     <li><a href="#types">Data types at a glance</a></li>
     <li><a href="#input">The input: a clap recording</a></li>
     <li><a href="#simulated">Simulated room outputs</a></li>
-    <li><a href="#rooms">The two real rooms</a></li>
+    <li><a href="#rooms">The two real rooms and recorder positions ①–④</a></li>
     <li><a href="#setup">How we recorded</a></li>
-    <li><a href="#audio">Listen to every file</a></li>
+    <li><a href="#audio">Listen to the input and simulations</a></li>
   </ol></div>
 
   <h2 id="types">Data types at a glance</h2>
@@ -74,7 +74,7 @@
   </figure>
 
   <h2 id="rooms">The two real rooms</h2>
-  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches.</p>
+  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches. In each room the phone (red dot) played <code>claps.wav</code> from the middle of the room, and the recorder was held at four positions, labeled <strong>①–④</strong> on every sketch and plan.</p>
   <div class="tbl"><table>
     <thead><tr><th>Factor</th><th>Room One: bedroom</th><th>Room Two: bathroom</th></tr></thead>
     <tbody>
@@ -82,30 +82,54 @@
       <tr><td>Volume</td><td>≈ 30.5 m³</td><td>≈ 8.6 m³</td></tr>
       <tr><td>Contents</td><td>Bed, desk, shelves (mix of soft and hard)</td><td>Bathtub, toilet, sink cabinet (hard)</td></tr>
       <tr><td>Openings</td><td>0.86 m doorway to corridor, no door</td><td>Closed</td></tr>
-      <tr><td>Source</td><td>Phone on the center shelf, ≈ 0.8 m high</td><td>Phone on the floor mat, room center</td></tr>
-      <tr><td>Recorder</td><td>Midpoint of each wall, same height as source</td><td>Each corner, 0.90 m high, hand-held</td></tr>
+      <tr><td>Source</td><td>Phone on top of the center shelf (0.77 m)</td><td>Phone on the floor mat, room center</td></tr>
+      <tr><td>Recorder positions ①–④</td><td><strong>Midpoint of each of the four walls</strong>, same height as the source</td><td><strong>The four corners</strong>, 0.90 m above the floor</td></tr>
     </tbody>
   </table></div>
-  <div class="two">
-    <figure>
-      <img src="img/bedroom_plan.png" alt="Bedroom floor plan with source and four recorder positions" loading="lazy">
-      <figcaption>Bedroom plan. Red dot: source. Blue 1–4: recorder positions.</figcaption>
-    </figure>
-    <figure>
-      <img src="img/bathroom_plan.png" alt="Bathroom floor plan with source and four recorder positions" loading="lazy">
-      <figcaption>Bathroom plan. Red dot: source. Blue 1–4: recorder positions.</figcaption>
-    </figure>
-  </div>
+
+  <!-- ---------- Room One ---------- -->
+  <section class="room" id="bedroom">
+    <h3>Room One · Bedroom</h3>
+    <div class="room-imgs">
+      <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="3D illustration of the bedroom with bed, center shelf, desk and doorway" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
+      <figure><img src="img/bedroom_hand_sketch.jpg" alt="Hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Original measured sketch. Red: phone on the center shelf. Blue ①–④: recorder at the middle of each wall.</figcaption></figure>
+    </div>
+    <div class="room-detail">
+      <figure><img src="img/bedroom_plan.png" alt="Clean bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Plan redrawn from the sketch.</figcaption></figure>
+      <div class="positions">
+        <p class="pos-note"><strong>Positions ①–④ are at the middle of each wall</strong> (not the corners), held at the same height as the phone.</p>
+        <ol class="pos-list">
+          <li><span class="pin bed">1</span><div><strong>Left wall, middle</strong><br><span class="meta">Open floor between the desk and the corner shelf.</span><audio controls preload="none" src="audio/bedroom1.m4a"></audio></div></li>
+          <li><span class="pin bed">2</span><div><strong>Bottom wall, middle</strong><br><span class="meta">Wall next to the corridor opening.</span><audio controls preload="none" src="audio/bedroom2.m4a"></audio></div></li>
+          <li><span class="pin bed">3</span><div><strong>Top wall, middle</strong><br><span class="meta">Between the desk and the center shelf.</span><audio controls preload="none" src="audio/bedroom3.m4a"></audio></div></li>
+          <li><span class="pin bed">4</span><div><strong>Right wall, middle</strong><br><span class="meta">Beyond the bed; sound passes over the bed to get here.</span><audio controls preload="none" src="audio/bedroom4.m4a"></audio></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Room Two ---------- -->
+  <section class="room" id="bathroom">
+    <h3>Room Two · Bathroom</h3>
+    <div class="room-imgs">
+      <figure><img src="img/bathroom_3d_concept.jpg" alt="3D illustration of the bathroom with bathtub, toilet, sink and floor mat" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
+      <figure><img src="img/bathroom_hand_sketch.jpg" alt="Hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Original measured sketch. Red: phone on the floor mat. Blue ①–④: recorder in each corner.</figcaption></figure>
+    </div>
+    <div class="room-detail">
+      <figure><img src="img/bathroom_plan.png" alt="Clean bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Plan redrawn from the sketch.</figcaption></figure>
+      <div class="positions">
+        <p class="pos-note"><strong>Positions ①–④ are the four corners of the room</strong>, recorder held by hand 0.90 m above the floor.</p>
+        <ol class="pos-list">
+          <li><span class="pin bath">1</span><div><strong>Bottom-left corner</strong><br><span class="meta">Open floor, opposite the bathtub.</span><audio controls preload="none" src="audio/bathroom1.m4a"></audio></div></li>
+          <li><span class="pin bath">2</span><div><strong>Top-left corner</strong><br><span class="meta">Above one end of the bathtub.</span><audio controls preload="none" src="audio/bathroom2.m4a"></audio></div></li>
+          <li><span class="pin bath">3</span><div><strong>Top-right corner</strong><br><span class="meta">Above the other end of the bathtub.</span><audio controls preload="none" src="audio/bathroom3.m4a"></audio></div></li>
+          <li><span class="pin bath">4</span><div><strong>Bottom-right corner</strong><br><span class="meta">Next to the sink cabinet.</span><audio controls preload="none" src="audio/bathroom4.m4a"></audio></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <p>The room dimensions already predict two things. Wall-to-wall round trips \(2d/c\) are 9–24 ms, so reflections should fuse with the direct sound rather than be heard as separate echoes. The lowest room modes \(c/2d\) lie at 42–114 Hz, where a phone speaker produces almost no sound, so we cannot observe them.</p>
-
-  <h3>Original sketches and 3D illustrations</h3>
-  <div class="two">
-    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Hand sketch of the bedroom with dimensions" loading="lazy"><figcaption>Bedroom hand sketch.</figcaption></figure>
-    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Hand sketch of the bathroom with dimensions" loading="lazy"><figcaption>Bathroom hand sketch.</figcaption></figure>
-    <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="AI-generated 3D illustration of the bedroom" loading="lazy"><figcaption>Bedroom, AI-generated 3D illustration. For visual reference only; not to scale and not used in analysis.</figcaption></figure>
-    <figure><img src="img/bathroom_3d_concept.jpg" alt="AI-generated 3D illustration of the bathroom" loading="lazy"><figcaption>Bathroom, AI-generated 3D illustration. For visual reference only.</figcaption></figure>
-  </div>
-
   <h2 id="setup">How we recorded</h2>
   <ul>
     <li>One phone played <code>claps.wav</code>; a second device, held by hand, recorded. One take per position, four positions per room.</li>
@@ -114,20 +138,13 @@
     <li>Distances from furniture to walls were not measured, so the plans show layout only and are not used to compute reflection paths.</li>
   </ul>
 
-  <h2 id="audio">Listen to every file</h2>
+  <h2 id="audio">Listen</h2>
+  <p>The input and the three simulated outputs are below. The eight room recordings are next to their positions in <a href="#bedroom">the bedroom</a> and <a href="#bathroom">the bathroom</a> sections above.</p>
   <div class="audio-list">
     <div class="audio-item"><div class="t">claps.wav <span class="tag orig">original</span></div><audio controls preload="none" src="audio/claps.wav"></audio></div>
     <div class="audio-item"><div class="t">Single echo <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/single_echo.wav"></audio></div>
     <div class="audio-item"><div class="t">Multiple reflections <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/multiple_reflections.wav"></audio></div>
     <div class="audio-item"><div class="t">Early reflections + tail <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/decay_tail_C.wav"></audio></div>
-    <div class="audio-item"><div class="t">Bedroom 1 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom1.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bedroom 2 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom2.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bedroom 3 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom3.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bedroom 4 <span class="tag bed">recorded</span></div><audio controls preload="none" src="audio/bedroom4.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bathroom 1 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom1.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bathroom 2 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom2.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bathroom 3 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom3.m4a"></audio></div>
-    <div class="audio-item"><div class="t">Bathroom 4 <span class="tag bath">recorded</span></div><audio controls preload="none" src="audio/bathroom4.m4a"></audio></div>
   </div>
   <p class="meta">Code: <a href="code/echo.py">echo.py</a> (simulation) · <a href="code/analysis.py">analysis.py</a> (estimation and report figures) · <a href="code/generate_plots.py">generate_plots.py</a> (the three plots on this site).</p>
 
