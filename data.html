@@ -36,6 +36,7 @@
     <li><a href="#rooms">The two real rooms and recorder positions ①–④</a></li>
     <li><a href="#setup">How we recorded</a></li>
     <li><a href="#audio">Listen to the input and simulations</a></li>
+    <li><a href="#reference">Reference: original hand sketches</a></li>
   </ol></div>
 
   <h2 id="types">Data types at a glance</h2>
@@ -92,10 +93,9 @@
     <h3>Room One · Bedroom</h3>
     <div class="room-imgs">
       <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="3D illustration of the bedroom with bed, center shelf, desk and doorway" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
-      <figure><img src="img/bedroom_hand_sketch.jpg" alt="Hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Original measured sketch. Red: phone on the center shelf. Blue ①–④: recorder at the middle of each wall.</figcaption></figure>
+      <figure><img src="img/bedroom_plan.png" alt="Clean bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone (sound source). Blue ①–④: recorder positions.</figcaption></figure>
     </div>
-    <div class="room-detail">
-      <figure><img src="img/bedroom_plan.png" alt="Clean bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Plan redrawn from the sketch.</figcaption></figure>
+    <div class="room-detail single">
       <div class="positions">
         <p class="pos-note"><strong>Positions ①–④ are at the middle of each wall</strong> (not the corners), held at the same height as the phone.</p>
         <ol class="pos-list">
@@ -113,10 +113,9 @@
     <h3>Room Two · Bathroom</h3>
     <div class="room-imgs">
       <figure><img src="img/bathroom_3d_concept.jpg" alt="3D illustration of the bathroom with bathtub, toilet, sink and floor mat" loading="lazy"><figcaption>3D illustration (AI-generated, for orientation only; not to scale).</figcaption></figure>
-      <figure><img src="img/bathroom_hand_sketch.jpg" alt="Hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Original measured sketch. Red: phone on the floor mat. Blue ①–④: recorder in each corner.</figcaption></figure>
+      <figure><img src="img/bathroom_plan.png" alt="Clean bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone (sound source). Blue ①–④: recorder positions.</figcaption></figure>
     </div>
-    <div class="room-detail">
-      <figure><img src="img/bathroom_plan.png" alt="Clean bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Plan redrawn from the sketch.</figcaption></figure>
+    <div class="room-detail single">
       <div class="positions">
         <p class="pos-note"><strong>Positions ①–④ are the four corners of the room</strong>, recorder held by hand 0.90 m above the floor.</p>
         <ol class="pos-list">
@@ -147,6 +146,13 @@
     <div class="audio-item"><div class="t">Early reflections + tail <span class="tag sim">simulated</span></div><audio controls preload="none" src="audio/decay_tail_C.wav"></audio></div>
   </div>
   <p class="meta">Code: <a href="code/echo.py">echo.py</a> (simulation) · <a href="code/analysis.py">analysis.py</a> (estimation and report figures) · <a href="code/generate_plots.py">generate_plots.py</a> (the three plots on this site).</p>
+
+  <h2 id="reference">Reference: original hand sketches</h2>
+  <p>The measured plans above were redrawn from these hand sketches, which we made while measuring the rooms. They are included for reference only: they hold the original dimensions and notes but are not needed to follow the analysis.</p>
+  <div class="two">
+    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Original hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Bedroom. Red: phone on the center shelf. Blue ①–④: recorder at the middle of each wall.</figcaption></figure>
+    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Original hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Bathroom. Red: phone on the floor mat. Blue ①–④: recorder in each corner.</figcaption></figure>
+  </div>
 
   <div class="pager"><a href="index.html">← Overview</a><a href="plots.html">Three new plots →</a></div>
 </main>

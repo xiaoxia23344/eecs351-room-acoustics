@@ -178,3 +178,5 @@ h2[id], h3[id], [id] { scroll-margin-top: 90px; }
 .contents a { font: 600 17px "Inter", sans-serif; text-decoration: none; }
 .contents a:hover { text-decoration: underline; }
 .contents p { margin: 2px 0 0; color: var(--muted); font-size: 15.5px; }
+.room-imgs { grid-template-columns: 1.25fr 1fr; align-items: center; }
+.room-detail.single { grid-template-columns: 1fr; }
