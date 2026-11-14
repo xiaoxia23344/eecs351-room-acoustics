@@ -46,10 +46,10 @@
       <tr><td><strong>Simulated outputs</strong></td><td>\(x[n]\) convolved with three impulse responses we designed in Python</td><td>WAV, 16-bit</td><td class="r">3</td></tr>
       <tr><td><strong>Bedroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder at the midpoint of each wall</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
       <tr><td><strong>Bathroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder in each corner</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
-      <tr><td><strong>Room measurements</strong></td><td>Tape-measured dimensions and hand sketches of both rooms</td><td>Sketch, table</td><td class="r">2 rooms</td></tr>
+      <tr><td><strong>Room measurements</strong> <span class="meta">(context, not a signal)</span></td><td>Tape-measured dimensions and hand sketches of both rooms</td><td>Sketch, table</td><td class="r">2 rooms</td></tr>
     </tbody>
   </table></div>
-  <p>From these we compute further data: estimated room impulse responses \(\hat h[n]\), energy-decay curves, spectra, and room-acoustic metrics (EDT, \(T_{10}\), DRR, \(C_{50}\)).</p>
+  <p>The four kinds of audio are our signal data; all four appear together in <a href="plots.html#plot1">Plot 1</a>. The room measurements are context for interpreting them. From the audio we compute further data: estimated room impulse responses \(\hat h[n]\), energy-decay curves, spectra, and room-acoustic metrics (EDT, \(T_{10}\), DRR, \(C_{50}\)).</p>
 
   <h2 id="input">The input: a clap recording</h2>
   <div class="split">

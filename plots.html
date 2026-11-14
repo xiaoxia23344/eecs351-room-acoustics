@@ -61,7 +61,7 @@
   <ul>
     <li><strong>Original clap:</strong> a sharp transient and a short fading tail, mostly dark after ~130 ms.</li>
     <li><strong>Single echo:</strong> a clearly separate second bright band at 250 ms, exactly the designed delay.</li>
-    <li><strong>Multiple reflections:</strong> bright bands at 150 and 300 ms as designed (the 500-ms reflection is outside the window). The extra feature around 50 ms is likely a delayed copy of an <em>earlier</em> clap: the input has 12 claps, and convolution adds reflections to every one of them.</li>
+    <li><strong>Multiple reflections:</strong> bright bands at 150 and 300 ms as designed (the 500-ms reflection is outside the window). The extra band around 50 ms is the 0.5-s reflection of the <em>previous</em> clap, which came 0.447 s earlier, so it lands at about +53 ms: the input has 12 claps, and convolution adds reflections to every one of them.</li>
     <li><strong>Decay tail:</strong> no separate bands, just a smooth fade from bright to dark, which is what reverberation looks like, compared with discrete echoes.</li>
     <li><strong>Real rooms:</strong> energy is dense and continuous, with no isolated echoes. Several rows (Bedroom 3, Bathroom 4) stay bright late in the window.</li>
   </ul>
