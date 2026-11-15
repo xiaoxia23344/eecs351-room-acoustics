@@ -71,7 +71,7 @@
   <h2>Two details that mattered</h2>
   <ol>
     <li><strong>FFT length.</strong> Multiplying DFTs gives <em>circular</em> convolution. To get the linear one, the FFT length has to be at least \(N_x + N_y\), otherwise the end of the response wraps around to the start.</li>
-    <li><strong>Unknown delay.</strong> Our recorder was not started in sync with playback, so \(\hat h[n]\) appears at an arbitrary lag. We shift it circularly, find its largest peak, and crop from 2 ms before to 1 s after.</li>
+    <li><strong>Unknown delay.</strong> The recording phone was not started in sync with playback, so \(\hat h[n]\) appears at an arbitrary lag. We shift it circularly, find its largest peak, and crop from 2 ms before to 1 s after.</li>
   </ol>
 
   <h2>Did it work?</h2>

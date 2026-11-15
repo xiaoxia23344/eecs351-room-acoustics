@@ -51,7 +51,7 @@
 
   <h2>What we did</h2>
   <p>We started by <strong>building rooms of our own</strong>: synthetic impulse responses with a single echo, several echoes, and millisecond-scale reflections with a decaying tail. Convolving a clap recording with them confirmed that convolution produces exactly the echoes we designed, and that an echo in time is a comb-shaped ripple in frequency.</p>
-  <p>Then we <strong>took the same clap recording into the two rooms above</strong>. A phone played it from the middle of each room while a hand-held recorder captured it at four positions, ①–④: the middle of each wall in the bedroom and the four corners in the bathroom (see <a href="data.html#rooms">the room maps</a>). Because we know exactly what was played, we can <strong>deconvolve</strong> each recording to estimate the room's impulse response, then measure how fast it decays and how much energy arrives early.</p>
+  <p>Then we <strong>took the same clap recording into the two rooms above</strong>. A phone played it from the middle of each room while a second phone, held by hand, recorded it at four positions, ①–④: the middle of each wall in the bedroom and the four corners in the bathroom (see <a href="data.html#rooms">the room maps</a>). Because we know exactly what was played, we can <strong>deconvolve</strong> each recording to estimate the room's impulse response, then measure how fast it decays and how much energy arrives early.</p>
 
   <h2>Listen first</h2>
   <p>Headphones help. Listen for how long each clap keeps ringing.</p>
@@ -65,12 +65,12 @@
 
   <h2>What we found so far</h2>
   <p class="pull">The small, hard-surfaced bathroom holds on to sound longer at first and is less clear than the bedroom, at every one of the eight positions.</p>
-  <p>The bathroom's early decay time is 0.40 s against the bedroom's 0.32 s. Its clarity, the ratio of energy in the first 50 ms to everything after, is 7.6 dB against 9.7 dB. The ranges of the two rooms do not overlap. Split by frequency, the bedroom is clearest around 1 kHz, while above 2 kHz the two rooms are nearly the same in clarity.</p>
-  <p>We are careful with the word "because". The rooms differ in size, materials, openings, and where we put the phone and recorder, so any one of these could be responsible. We also found that the phones shape what we measure: the speaker's own frequency response appears in every recording, and the phone seems to apply automatic gain control, which breaks the linearity our model assumes. Fixing that, with a sine-sweep measurement and a controlled towels-on/towels-off test, is the plan for the next three weeks.</p>
+  <p>The bathroom's early decay time is 0.40 s against the bedroom's 0.32 s. Its clarity, the ratio of energy in the first 50 ms to everything after, is 7.6 dB against 9.7 dB. The ranges of the two rooms do not overlap. Split by frequency, the bedroom's advantage is largest around 1 kHz, while at 2 kHz and above the two rooms are nearly the same in clarity.</p>
+  <p>We are careful with the word "because". The rooms differ in size, materials, openings, and where we put the two phones, so any one of these could be responsible. We also found that the phones shape what we measure: the speaker's own frequency response appears in every recording, and the phone seems to apply automatic gain control, which breaks the linearity our model assumes. Fixing that, with a sine-sweep measurement and a controlled towels-on/towels-off test, is the plan for the next three weeks.</p>
 
   <h2>Read on</h2>
   <ol class="contents">
-    <li><div><a href="data.html">Our data</a><p>The clap recording, the simulated outputs, and both rooms with sketches, 3D views and recorder positions ①–④.</p></div></li>
+    <li><div><a href="data.html">Our data</a><p>The clap recording, the simulated outputs, and both rooms with sketches, 3D views and recording positions ①–④.</p></div></li>
     <li><div><a href="plots.html">Analysis: energy, clarity and decay</a><p>Three new plots: energy over time for all 12 signals, clarity by frequency band, and early decay time vs. clarity.</p></div></li>
     <li><div><a href="progress.html">Progress and challenges</a><p>What we did in each task, what went wrong, and how we plan to fix it.</p></div></li>
     <li><div><a href="plan.html">Plan for the next three weeks</a><p>Sine-sweep measurements, a controlled material test, an image-source room model, and a listening demo.</p></div></li>

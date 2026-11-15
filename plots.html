@@ -33,7 +33,6 @@
     <li><a href="#plot1">Plot 1: short-time energy of all 12 signals</a> (uses <strong>every</strong> data type)</li>
     <li><a href="#plot2">Plot 2: clarity \(C_{50}\) by octave band</a></li>
     <li><a href="#plot3">Plot 3: early decay time vs. clarity</a></li>
-    <li><a href="#takeaway">Together</a></li>
   </ol></div>
 
   <!-- ================= PLOT 1 ================= -->
@@ -71,7 +70,7 @@
   <h2 id="plot2">Plot 2 · Frequency-dependent clarity in the two rooms</h2>
   <figure>
     <img src="img/plot2_frequency_clarity.png" alt="Line plot of clarity C50 in dB versus octave band 500 to 4000 Hz for bedroom and bathroom" loading="lazy">
-    <figcaption>Blue: bedroom. Orange: bathroom. Heavy line: room mean. Faint dots: the four recorder positions (<a href="data.html#rooms">where they are</a>). Vertical bar: range across positions.</figcaption>
+    <figcaption>Blue: bedroom. Orange: bathroom. Heavy line: room mean. Faint dots: the four recording positions (<a href="data.html#rooms">where they are</a>). Vertical bar: range across positions.</figcaption>
   </figure>
 
   <div class="qa">
@@ -102,18 +101,18 @@
     </tbody>
   </table></div>
   <ul>
-    <li>The bedroom is clearer in the <strong>low bands</strong>, most at 1 kHz (+2.85 dB). Above 2 kHz the order flips and the bathroom is slightly clearer.</li>
-    <li>Both rooms get clearer at higher frequencies. This is consistent with high frequencies being absorbed faster by surfaces and air, so less of their energy arrives late.</li>
+    <li>The bedroom is clearer in the <strong>low bands</strong>, most at 1 kHz (+2.85 dB). At 2 and 4 kHz the order flips and the bathroom is slightly clearer.</li>
+    <li>Both rooms show higher \(C_{50}\) in the higher bands. Part of this comes from the method: the usable response is shorter there (on average about 87 ms at 4 kHz against 126 ms at 1 kHz), so less late energy is counted. We do not read it as a property of the rooms.</li>
     <li>\(C_{50}\) compares early to late energy <em>within a band</em>. It does not say which room has more high-frequency energy overall.</li>
     <li>The position ranges overlap a lot, especially at 2 kHz, so the small high-frequency differences are not strong evidence. The 1 kHz gap is the most convincing.</li>
   </ul>
-  <div class="note"><strong>Limits.</strong> Each estimate includes the phone speaker and microphone, not just the room. Each position was recorded once. The rooms also differ in size, contents, source placement and recorder placement, so these are differences <em>in this dataset</em>, not isolated material effects.</div>
+  <div class="note"><strong>Limits.</strong> Each estimate includes the phone speaker and microphone, not just the room. Each position was recorded once. The rooms also differ in size, contents, source placement and recording positions, so these are differences <em>in this dataset</em>, not isolated material effects.</div>
 
   <!-- ================= PLOT 3 ================= -->
   <h2 id="plot3">Plot 3 · Early decay time vs. clarity</h2>
   <figure>
     <img src="img/plot3_edt_vs_clarity.png" alt="Scatter plot of clarity C50 versus early decay time for four bedroom and four bathroom positions, with room means as diamonds" loading="lazy">
-    <figcaption>Each dot is one recorder position, numbered 1–4: the middle of each wall in the bedroom, the four corners in the bathroom (<a href="data.html#rooms">see the room maps</a>). Diamonds are room means. Blue: bedroom. Orange: bathroom.</figcaption>
+    <figcaption>Each dot is one recording position, numbered 1–4: the middle of each wall in the bedroom, the four corners in the bathroom (<a href="data.html#rooms">see the room maps</a>). Diamonds are room means. Blue: bedroom. Orange: bathroom.</figcaption>
   </figure>
 
   <div class="qa">
@@ -135,14 +134,12 @@
     <div class="stat b"><div class="v">0.40 s · 7.6 dB</div><div class="l">Bathroom mean EDT · C<sub>50</sub></div></div>
   </div>
   <ul>
-    <li>The two rooms form two separate clusters. <strong>Every</strong> bathroom position has a longer EDT (0.38–0.42 s) than every bedroom position (0.28–0.36 s), and <strong>every</strong> bathroom position has lower clarity (7.0–8.3 dB vs. 8.8–10.7 dB).</li>
-    <li>Within the bedroom the trend is also roughly downward; within the bathroom there is no clear trend. So the relationship is mostly a difference <em>between</em> the rooms. That both metrics move together is expected, since both depend on how quickly the first ~50–100 ms of energy fades.</li>
-    <li>This fits the hard, reflective surfaces of the bathroom: by Sabine's relation \(T_{60}\approx 0.161\,V/A\), a smaller room only decays faster if its absorption \(A\) does not shrink just as much.</li>
+    <li>The two rooms form two separate clusters. Every bathroom position has a longer EDT (0.38–0.42 s) than every bedroom position (0.28–0.36 s), and every bathroom position has lower clarity (7.0–8.3 dB vs. 8.8–10.7 dB).</li>
+    <li>Four points per room are too few to show a trend inside either room, so the relationship is a difference <em>between</em> the rooms. That both metrics move together is expected: EDT is fitted on the first 10 dB of decay, which here takes about 50–70 ms, and \(C_{50}\) splits the energy at 50 ms, so both describe the same early part of the response.</li>
+    <li>The later decay does not differ: \(T_{10}\) is 0.38 s in both rooms, so the bathroom is slower only at the start. Hard surfaces that absorb little are one possible explanation (by Sabine's relation \(T_{60}\approx 0.161\,V/A\), a smaller room only decays faster if its absorption \(A\) does not shrink just as much), but we would then expect the later decay to be slower too. Our data cannot settle this.</li>
   </ul>
-  <div class="note"><strong>Association, not cause.</strong> Both metrics come from the same impulse responses, and the rooms differ in several uncontrolled ways. Four positions with one take each cannot establish a general relationship. A controlled test is in our <a href="plan.html">plan</a>.</div>
+  <p>This is an association, not a cause: both metrics come from the same impulse responses, and the limits listed under <a href="#plot2">Plot 2</a> apply here too.</p>
 
-  <h2 id="takeaway">Together</h2>
-  <p><strong>Plot 1</strong> shows all of our data on one time axis and makes the difference between discrete echoes, a modeled reverberant tail and real rooms visible. <strong>Plot 2</strong> shows that the room comparison depends on frequency. <strong>Plot 3</strong> shows that the bathroom consistently decays more slowly at first and is less clear. All three also show why uncontrolled real-world recordings need careful interpretation, which drives our <a href="plan.html">next steps</a>.</p>
   <p class="meta">Code: <a href="code/generate_plots.py">generate_plots.py</a> · Data: <a href="code/plot2_band_metrics.csv">plot2_band_metrics.csv</a>, <a href="code/plot3_table4_metrics.csv">plot3_table4_metrics.csv</a></p>
 
   <div class="pager"><a href="data.html">← Our data</a><a href="progress.html">Progress &amp; challenges →</a></div>

@@ -43,7 +43,7 @@
     <img src="img/waveforms.png" alt="Waveforms of the original clap and the single-echo and multiple-reflection outputs" loading="lazy">
     <figcaption>Waveforms around the loudest clap. With the single echo, a copy of the clap appears 0.25 s later at about 0.6 of its height (0.52 vs. 0.86). With multiple reflections, copies appear at +0.15, +0.30 and +0.50 s, getting weaker each time.</figcaption>
   </figure>
-  <p><strong>Time domain.</strong> Every designed echo appears where expected, and each clap gets its own set of echoes, which the output then adds together. That is linearity and time-invariance at work. All the delays (150–500 ms) are far above the ~30–50 ms echo threshold, so you hear separate repeats rather than reverberation. The third model, with millisecond reflections and a noise tail, sounds like a small room instead.</p>
+  <p><strong>Time domain.</strong> Every designed echo appears where expected, and each clap gets its own set of echoes, which the output then adds together. That is linearity and time-invariance at work. All the delays (150–500 ms) are far above the ~30–50 ms echo threshold, so you hear separate repeats rather than reverberation. The third model, with millisecond reflections and a noise tail, behaves differently: its energy falls along a straight line in dB instead of showing separate bumps.</p>
   <div class="two">
     <figure>
       <img src="img/figA_envelope.png" alt="Short-time energy of original and three simulated outputs" loading="lazy">
@@ -89,7 +89,7 @@
       <tr><td>DRR</td><td class="r">−5.0 ± 1.6 dB</td><td class="r">−5.4 ± 2.0 dB</td><td>Similar</td></tr>
     </tbody>
   </table></div>
-  <p>The slower early decay in the bathroom fits its hard, non-absorbing surfaces. We expected the bedroom's soft furniture to make it sound duller at high frequencies, but we saw the opposite: the bathroom's spectrum has about 5 dB less energy above 2.4 kHz, relative to its peak. A likely reason is the source: in the bathroom the phone lay face-up on the floor, so the corner microphones were far off the speaker's axis, and high frequencies are the most directional. Because the rooms differ in size, contents, openings and source and recorder placement all at once, we cannot attribute any difference to one factor.</p>
+  <p>The slower early decay in the bathroom fits the idea that its hard surfaces absorb little, although the later decay (\(T_{10}\)) is the same in both rooms. We expected the bedroom's soft furniture to make it sound duller at high frequencies, but we saw the opposite: the bathroom's spectrum has about 5 dB less energy above 2.4 kHz, relative to its peak. The spread between positions in the same room is almost as large, so this difference is only suggestive. One possible reason is the source: in the bathroom the phone lay face-up on the floor, so the recording phone in each corner was far off the speaker's axis, and high frequencies are the most directional. Because the rooms differ in size, contents, openings and source and recording positions all at once, we cannot attribute any difference to one factor.</p>
 
   <h2 id="challenges">Challenges and how to overcome them</h2>
   <div class="tbl"><table>
@@ -111,14 +111,9 @@
         <td><em>Done:</em> analyze only 300 Hz – 8 kHz. <em>Next:</em> measure a reference with the mic very close to the speaker and divide that device response out; compare rooms only by <em>differences</em>, which cancel the shared device response.</td>
       </tr>
       <tr>
-        <td><strong>Too much noise</strong></td>
-        <td>The noise floor is only 19–24 dB below the peak. The standard \(T_{20}\) needs about 35 dB, so we can only report EDT and \(T_{10}\).</td>
-        <td>A longer sweep puts more energy into the room; average 3+ takes per position; record at a quiet time.</td>
-      </tr>
-      <tr>
-        <td><strong>No synchronization, hand-held recorder</strong></td>
-        <td>We have to align signals afterwards by their peaks, and small hand movements change the position between claps.</td>
-        <td>Put the recorder on a stand at a marked spot; add a sync click before the sweep.</td>
+        <td><strong>Noisy, hand-held recordings</strong></td>
+        <td>The noise floor is only 19–24 dB below the peak. The standard \(T_{20}\) needs about 35 dB, so we can only report EDT and \(T_{10}\). The recording phone was held by hand and not started in sync with playback, so positions cannot be repeated exactly and signals have to be aligned afterwards by their peaks.</td>
+        <td>A longer sweep puts more energy into the room; average 3+ takes per position; put the recording phone on a stand at a marked spot; add a sync click before the sweep.</td>
       </tr>
       <tr>
         <td><strong>Confounded room comparison</strong></td>

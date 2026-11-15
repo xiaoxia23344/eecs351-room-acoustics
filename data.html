@@ -44,8 +44,8 @@
     <tbody>
       <tr><td><strong>Original clap</strong> <code>claps.wav</code></td><td>Recorded with hands close to a phone microphone. This is \(x[n]\).</td><td>WAV, mono after averaging</td><td class="r">1</td></tr>
       <tr><td><strong>Simulated outputs</strong></td><td>\(x[n]\) convolved with three impulse responses we designed in Python</td><td>WAV, 16-bit</td><td class="r">3</td></tr>
-      <tr><td><strong>Bedroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder at the midpoint of each wall</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
-      <tr><td><strong>Bathroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; recorder in each corner</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
+      <tr><td><strong>Bedroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; a second phone records at the midpoint of each wall</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
+      <tr><td><strong>Bathroom recordings</strong></td><td>Phone plays <code>claps.wav</code>; a second phone records in each corner</td><td>AAC (.m4a), stereo, 48 kHz</td><td class="r">4</td></tr>
       <tr><td><strong>Room measurements</strong> <span class="meta">(context, not a signal)</span></td><td>Tape-measured dimensions and hand sketches of both rooms</td><td>Sketch, table</td><td class="r">2 rooms</td></tr>
     </tbody>
   </table></div>
@@ -76,7 +76,7 @@
   </div>
 
   <h2 id="rooms">The two real rooms</h2>
-  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches. In each room the phone (red dot) played <code>claps.wav</code> from the middle of the room, and the recorder was held at four positions, labeled <strong>①–④</strong> on every plan.</p>
+  <p>Both rooms are in the same residence. Dimensions come from tape-measured hand sketches. In each room the phone (red dot) played <code>claps.wav</code> from the middle of the room, and a second phone, held by hand, recorded at four positions, labeled <strong>①–④</strong> on every plan.</p>
   <div class="tbl"><table>
     <thead><tr><th>Factor</th><th>Room One: bedroom</th><th>Room Two: bathroom</th></tr></thead>
     <tbody>
@@ -85,7 +85,7 @@
       <tr><td>Contents</td><td>Bed, desk, shelves (mix of soft and hard)</td><td>Bathtub, toilet, sink cabinet (hard)</td></tr>
       <tr><td>Openings</td><td>0.86 m doorway to corridor, no door</td><td>Closed</td></tr>
       <tr><td>Source</td><td>Phone on top of the center shelf (0.77 m)</td><td>Phone on the floor mat, room center</td></tr>
-      <tr><td>Recorder positions ①–④</td><td><strong>Midpoint of each of the four walls</strong>, same height as the source</td><td><strong>The four corners</strong>, 0.90 m above the floor</td></tr>
+      <tr><td>Recording positions ①–④</td><td><strong>Midpoint of each of the four walls</strong>, same height as the source</td><td><strong>The four corners</strong>, 0.90 m above the floor</td></tr>
     </tbody>
   </table></div>
 
@@ -95,7 +95,7 @@
     <div class="room-grid">
       <div class="room-visual">
         <figure><img src="img/bedroom_3d_concept_v10.jpg" alt="3D illustration of the bedroom with bed, center shelf, desk and doorway" loading="lazy"><figcaption>3D illustration (AI-generated, not to scale).</figcaption></figure>
-        <figure><img src="img/bedroom_plan.png" alt="Measured bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recorder.</figcaption></figure>
+        <figure><img src="img/bedroom_plan.png" alt="Measured bedroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recording phone.</figcaption></figure>
       </div>
       <div>
         <p class="pos-note"><strong>①–④ are at the middle of each wall</strong> (not the corners), at the same height as the phone.</p>
@@ -115,10 +115,10 @@
     <div class="room-grid">
       <div class="room-visual">
         <figure><img src="img/bathroom_3d_concept.jpg" alt="3D illustration of the bathroom with bathtub, toilet, sink and floor mat" loading="lazy"><figcaption>3D illustration (AI-generated, not to scale).</figcaption></figure>
-        <figure><img src="img/bathroom_plan.png" alt="Measured bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recorder.</figcaption></figure>
+        <figure><img src="img/bathroom_plan.png" alt="Measured bathroom plan with source and positions 1 to 4" loading="lazy"><figcaption>Measured plan. Red: phone. Blue ①–④: recording phone.</figcaption></figure>
       </div>
       <div>
-        <p class="pos-note"><strong>①–④ are the four corners of the room</strong>, recorder held by hand 0.90 m above the floor.</p>
+        <p class="pos-note"><strong>①–④ are the four corners of the room</strong>, recording phone held by hand 0.90 m above the floor.</p>
         <ol class="pos-list">
           <li><span class="pin bath">1</span><div><strong>Bottom-left corner</strong><br><span class="meta">Open floor, opposite the bathtub.</span><audio controls preload="none" src="audio/bathroom1.m4a"></audio></div></li>
           <li><span class="pin bath">2</span><div><strong>Top-left corner</strong><br><span class="meta">Above one end of the bathtub.</span><audio controls preload="none" src="audio/bathroom2.m4a"></audio></div></li>
@@ -143,8 +143,8 @@
   <h2 id="reference">Reference: original hand sketches</h2>
   <p>The measured plans above were redrawn from these hand sketches, which we made while measuring the rooms. They are included for reference only.</p>
   <div class="sketches">
-    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Original hand sketch of the bedroom with dimensions, source and recorder positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Bedroom: recorder at the middle of each wall.</figcaption></figure>
-    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Original hand sketch of the bathroom with dimensions, source and recorder positions 1 to 4 in the corners" loading="lazy"><figcaption>Bathroom: recorder in each corner.</figcaption></figure>
+    <figure><img src="img/bedroom_hand_sketch.jpg" alt="Original hand sketch of the bedroom with dimensions, source and recording positions 1 to 4 at the middle of each wall" loading="lazy"><figcaption>Bedroom: recording phone at the middle of each wall.</figcaption></figure>
+    <figure><img src="img/bathroom_hand_sketch.jpg" alt="Original hand sketch of the bathroom with dimensions, source and recording positions 1 to 4 in the corners" loading="lazy"><figcaption>Bathroom: recording phone in each corner.</figcaption></figure>
   </div>
 
   <div class="pager"><a href="index.html">← Overview</a><a href="plots.html">Analysis →</a></div>
